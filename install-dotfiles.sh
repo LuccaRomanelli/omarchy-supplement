@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ORIGINAL_DIR=$(pwd)
-REPO_URL="https://github.com/typecraft-dev/dotfiles"
+GIT_SYNC_SCRIPT="$ORIGINAL_DIR/git_sync_repo.sh"
+REPO_URL="https://github.com/LuccaRomanelli/dotfiles.git"
 REPO_NAME="dotfiles"
 
 is_stow_installed() {
@@ -14,6 +15,9 @@ if ! is_stow_installed; then
 fi
 
 cd ~
+
+# Sync the repository
+"$GIT_SYNC_SCRIPT" "$REPO_URL" "$REPO_NAME"
 
 # Check if the repository already exists
 if [ -d "$REPO_NAME" ]; then
@@ -33,6 +37,7 @@ if [ $? -eq 0 ]; then
   stow tmux
   stow nvim
   stow starship
+  stow waybar
 else
   echo "Failed to clone the repository."
   exit 1

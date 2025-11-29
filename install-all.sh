@@ -20,7 +20,6 @@
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
 ./install-todoist.sh
+./set-shell.sh
 ./unistall-omarchy-apps.sh
 ./unistall-omarchy-webapps.sh
-
-./set-shell.sh

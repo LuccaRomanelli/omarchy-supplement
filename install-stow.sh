@@ -1,4 +1,5 @@
 #!/bin/bash
 
-# Install stow
-yay -S --noconfirm --needed stow
+if ! command -v stow &>/dev/null; then
+    yay -S --noconfirm --needed stow
+fi

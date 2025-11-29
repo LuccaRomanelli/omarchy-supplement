@@ -14,5 +14,13 @@
 ./install-ripgrep.sh
 ./install-obsidian-vault.sh
 ./install-hyprland-overrides.sh
+./install-omarchy-themes.sh
+./install-ai-tools.sh
+./install-omarchy-chromium-google-account.sh
+./install-omarchy-themes.sh
+./install-omarchy-webapps.sh
+./install-todoist.sh
+./unistall-omarchy-apps.sh
+./unistall-omarchy-webapps.sh
 
 ./set-shell.sh

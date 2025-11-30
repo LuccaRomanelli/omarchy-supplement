@@ -2,7 +2,7 @@
 
 # Install all packages in order
 ./install-zed.sh
-./install-obsidian-vault.sh
+./install-obisidian-vault.sh
 ./install-zsh.sh
 ./install-yazi.sh
 ./install-nodejs.sh

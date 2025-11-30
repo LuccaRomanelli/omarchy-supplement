@@ -6,7 +6,7 @@
 ./install-obisidian-vault.sh
 ./install-zsh.sh
 ./install-yazi.sh
-./install-nodejs.sh
+./install-dev.sh
 ./install-tmux.sh
 ./install-stow.sh
 ./install-shell-scripts.sh

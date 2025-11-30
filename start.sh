@@ -15,7 +15,6 @@
 ./install-omarchy-chromium-google-account.sh
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
-./install-todoist.sh
 ./install-stow.sh
 ./install-dotfiles.sh
 ./set-shell.sh

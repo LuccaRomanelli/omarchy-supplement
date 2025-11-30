@@ -12,7 +12,6 @@
 ./install-shell-scripts.sh
 ./install-ripgrep.sh
 ./install-ai-tools.sh
-./install-omarchy-chromium-google-account.sh
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
 ./install-stow.sh

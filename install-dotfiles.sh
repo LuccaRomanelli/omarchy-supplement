@@ -22,13 +22,14 @@ cd ~
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
   echo "removing old configs"
-  rm -rf ~/.config/ghostty ~/.config/waybar
+  rm -rf ~/.config/ghostty ~/.config/waybar ~/.config/starship.toml
 
   cd "$REPO_NAME"
   stow zshrc
   stow ghostty
   stow tmux
   stow waybar
+  stow starship
 else
   echo "Failed to clone the repository."
   exit 1

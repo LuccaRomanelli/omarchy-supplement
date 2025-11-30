@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Install all packages in order
+./install-zed.sh
+./install-obsidian-vault.sh
 ./install-zsh.sh
 ./install-yazi.sh
 ./install-nodejs.sh
@@ -9,8 +11,6 @@
 ./install-stow.sh
 ./install-shell-scripts.sh
 ./install-ripgrep.sh
-./install-obsidian-vault.sh
-./install-hyprland-overrides.sh
 ./install-ai-tools.sh
 ./install-omarchy-chromium-google-account.sh
 ./install-omarchy-themes.sh
@@ -22,3 +22,4 @@
 ./unistall-omarchy-apps.sh
 ./unistall-omarchy-webapps.sh
 ./install-dotfiles.sh
+./install-hyprland-overrides.sh

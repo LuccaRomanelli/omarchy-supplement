@@ -2,7 +2,7 @@
 
 ORIGINAL_DIR=$(pwd)
 GIT_SYNC_SCRIPT="$ORIGINAL_DIR/git_sync_repo.sh"
-REPO_URL="https://github.com/LuccaRomanelli/dotfiles.git"
+REPO_URL="git@github.com:LuccaRomanelli/dotfiles.git"
 REPO_NAME="dotfiles"
 
 is_stow_installed() {
@@ -22,13 +22,12 @@ cd ~
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
   echo "removing old configs"
-  rm -rf ~/.config/nvim  ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty ~/.config/waybar
+  rm -rf ~/.config/ghostty ~/.config/waybar
 
   cd "$REPO_NAME"
   stow zshrc
   stow ghostty
   stow tmux
-  stow nvim
   stow waybar
 else
   echo "Failed to clone the repository."

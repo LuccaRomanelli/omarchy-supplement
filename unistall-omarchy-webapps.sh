@@ -3,7 +3,7 @@
 ICON_DIR="$HOME/.local/share/applications/icons"
 DESKTOP_DIR="$HOME/.local/share/applications/"
 
-APP_NAME=(
+APP_NAMES=(
     "Basecamp"
     "Chatgpt"
     "Google Contacts"

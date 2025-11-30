@@ -1,39 +1,88 @@
 #!/bin/bash
 
-# Diretório onde os temas do Omarchy são instalados
 THEMES_DIR="$HOME/.config/omarchy/themes"
 
-# Função para verificar se um tema já está instalado
+# Função que mapeia URL -> nome de diretório real do tema
+get_theme_dir_name() {
+    local repo_url="$1"
+
+    case "$repo_url" in
+        "https://github.com/dotsilva/omarchy-purplewave-theme")
+            echo "purplewave"
+            ;;
+        "https://github.com/Luquatic/omarchy-catppuccin-dark")
+            echo "catppuccin-dark"
+            ;;
+        "https://github.com/vyrx-dev/omarchy-void-theme.git")
+            echo "void"
+            ;;
+        "https://github.com/ahmed-z0/omarchy-miles-morales-theme")
+            echo "miles-morales"
+            ;;
+        "https://github.com/JJDizz1L/aetheria.git")
+            echo "aetheria"
+            ;;
+        "https://github.com/HANCORE-linux/omarchy-batou-theme.git")
+            echo "batou"
+            ;;
+        "https://github.com/JustArmaan/omarchy-gotham-city-theme.git")
+            echo "gotham-city"
+            ;;
+        "https://github.com/atif-1402/omarchy-rainynight-theme.git")
+            echo "rainynight"
+            ;;
+        "https://github.com/abhijeet-swami/omarchy-spectra-theme")
+            echo "spectra"
+            ;;
+        "https://github.com/atif-1402/omarchy-neonstreet-theme.git")
+            echo "neonstreet"
+            ;;
+        "https://github.com/Grey-007/duskwire.git")
+            echo "duskwire"
+            ;;
+        "https://github.com/ShehabShaef/omarchy-drac-theme")
+            echo "drac"
+            ;;
+        "https://github.com/evanklem/omarchy-avocado-theme")
+            echo "avocado"
+            ;;
+        "https://github.com/RiO7MAKK3R/omarchy-omacarchy-theme")
+            echo "omacarchy"
+            ;;
+        *)
+            # fallback: usa o basename sem .git
+            basename "$repo_url" .git
+            ;;
+    esac
+}
+
 is_theme_installed() {
     local repo_url="$1"
-    # Extrai o nome do repositório da URL (remove .git se existir)
-    local theme_name=$(basename "$repo_url" .git)
-    
-    # Verifica se o diretório do tema existe
-    if [ -d "$THEMES_DIR/$theme_name" ]; then
-        return 0  # Tema já instalado
+    local theme_dir
+    theme_dir="$(get_theme_dir_name "$repo_url")"
+
+    if [ -d "$THEMES_DIR/$theme_dir" ]; then
+        return 0
     else
-        return 1  # Tema não instalado
+        return 1
     fi
 }
 
-# Função para instalar tema se não estiver instalado
 install_theme_if_needed() {
     local repo_url="$1"
-    local theme_name=$(basename "$repo_url" .git)
-    
+    local theme_dir
+    theme_dir="$(get_theme_dir_name "$repo_url")"
+
     if is_theme_installed "$repo_url"; then
-        echo "✓ Tema '$theme_name' já está instalado. Pulando..."
+        echo "✓ Tema '$theme_dir' já está instalado. Pulando..."
     else
-        echo "→ Instalando tema '$theme_name'..."
+        echo "→ Instalando tema '$theme_dir' a partir de '$repo_url'..."
         omarchy-theme-install "$repo_url"
     fi
 }
 
-# Cria o diretório de temas se não existir
 mkdir -p "$THEMES_DIR"
 
-# Instala os temas apenas se não estiverem instalados
 install_theme_if_needed "https://github.com/dotsilva/omarchy-purplewave-theme"
 install_theme_if_needed "https://github.com/Luquatic/omarchy-catppuccin-dark"
 install_theme_if_needed "https://github.com/vyrx-dev/omarchy-void-theme.git"

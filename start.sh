@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Install all packages in order
-./install-zed.sh
+./install-ghostty.sh
+./install-zen.sh
 ./install-obisidian-vault.sh
 ./install-zsh.sh
 ./install-yazi.sh
 ./install-nodejs.sh
-./install-ghostty.sh
 ./install-tmux.sh
 ./install-stow.sh
 ./install-shell-scripts.sh

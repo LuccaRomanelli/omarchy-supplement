@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install Zsh
+# Install Zen
 if ! command -v zen-browser &>/dev/null; then
-    yay -S zen-browser-bin
+    yay -S --noconfirm --needed zen-browser-bin
 fi

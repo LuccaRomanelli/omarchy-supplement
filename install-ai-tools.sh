@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! command -v claude &>/dev/null; then
-    curl -fsSL https://claude.ai/install.sh | bash
+  npm install -g @anthropic-ai/claude-code
 fi
 
 if ! command -v gemini &>/dev/null; then

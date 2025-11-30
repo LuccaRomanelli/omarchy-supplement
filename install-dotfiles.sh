@@ -19,24 +19,16 @@ cd ~
 # Sync the repository
 "$GIT_SYNC_SCRIPT" "$REPO_URL" "$REPO_NAME"
 
-# Check if the repository already exists
-if [ -d "$REPO_NAME" ]; then
-  echo "Repository '$REPO_NAME' already exists. Skipping clone"
-else
-  git clone "$REPO_URL"
-fi
-
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
   echo "removing old configs"
-  rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
+  rm -rf ~/.config/nvim  ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty ~/.config/waybar
 
   cd "$REPO_NAME"
   stow zshrc
   stow ghostty
   stow tmux
   stow nvim
-  stow starship
   stow waybar
 else
   echo "Failed to clone the repository."

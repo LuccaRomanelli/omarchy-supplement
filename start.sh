@@ -14,6 +14,7 @@
 ./install-ai-tools.sh
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
+./install-lsof.sh
 ./install-stow.sh
 ./install-dotfiles.sh
 ./set-shell.sh

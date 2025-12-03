@@ -30,6 +30,8 @@ if [ $? -eq 0 ]; then
   stow tmux
   stow waybar
   stow starship
+  stow gitconfig
+  stow gitconfig-gitlab
 else
   echo "Failed to clone the repository."
   exit 1

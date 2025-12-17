@@ -15,10 +15,8 @@
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
 ./install-lsof.sh
-./install-stow.sh
 ./install-dotfiles.sh
 ./set-shell.sh
-./unistall-omarchy-apps.sh
-./unistall-omarchy-webapps.sh
-./install-dotfiles.sh
+./uninstall-omarchy-apps.sh
+./uninstall-omarchy-webapps.sh
 ./install-hyprland-overrides.sh

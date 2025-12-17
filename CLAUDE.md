@@ -187,18 +187,25 @@ Hyprland multi-monitor setup:
 ```
 
 ### Individual Package Installations
+
+**Scripts with post-install setup:**
+```bash
+./install-zsh.sh                # Install zsh + Oh-My-Zsh + plugins
+./install-tmux.sh               # Install tmux + TPM (Tmux Plugin Manager)
+./install-dev.sh                # Install node, laravel, pnpm
+```
+
+**Simple package installers** (can use batch installers instead):
 ```bash
 ./install-ghostty.sh            # Install Ghostty terminal emulator
 ./install-zen.sh                # Install Zen browser
-./install-obisidian-vault.sh    # Install Obsidian vault
 ./install-yazi.sh               # Install Yazi file manager
-./install-dev.sh                # Install development tools
-./install-tmux.sh               # Install tmux terminal multiplexer
-./install-zsh.sh                # Install zsh shell
 ./install-lsof.sh               # Install lsof utility
 ./install-ripgrep.sh            # Install ripgrep search tool
 ./install-stow.sh               # Install GNU Stow
 ```
+
+**Note:** The simple package installers above are kept for individual use, but `start.sh` uses batch installers for efficiency.
 
 ## Dependencies
 
@@ -214,22 +221,20 @@ The installation scripts assume:
 ## Installation Script Execution Order
 
 The `start.sh` script executes installation scripts in the following order:
-1. Ghostty terminal emulator
-2. Zen browser
+1. Batch install YAY packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty)
+2. Batch install Pacman packages (ripgrep)
 3. Obsidian vault
-4. Zsh shell
-5. Yazi file manager
-6. Development tools
-7. Tmux
-8. GNU Stow
-9. Shell scripts repository
-10. Ripgrep
-11. AI tools (Claude, Gemini, AbacusAI CLIs)
-12. Omarchy themes
-13. Omarchy webapps
-14. lsof utility
-15. Dotfiles (stowed configurations)
-16. Set default shell to zsh
-17. Uninstall Omarchy apps (cleanup)
-18. Uninstall Omarchy webapps (cleanup)
-19. Hyprland overrides
+4. Zsh shell (with Oh-My-Zsh post-install)
+5. Development tools (node, laravel, pnpm)
+6. Tmux (with TPM post-install)
+7. Shell scripts repository
+8. AI tools (Claude, Gemini, AbacusAI CLIs)
+9. Omarchy themes
+10. Omarchy webapps
+11. Dotfiles (stowed configurations)
+12. Set default shell to zsh
+13. Uninstall Omarchy apps (cleanup)
+14. Uninstall Omarchy webapps (cleanup)
+15. Hyprland overrides
+
+**Note:** Most packages are now installed via batch installers (`install-yay-packages.sh` and `install-pacman-packages.sh`) for efficiency. Individual install scripts are kept only for packages requiring post-installation setup (zsh, tmux) or special handling (dev tools).

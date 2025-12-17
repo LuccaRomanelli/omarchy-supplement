@@ -1,12 +1,11 @@
 # YAY packages for Omarchy system
 # Format: package_name [binary_name]
 # If binary_name is different from package_name, specify it after the package name
+# Note: Packages with post-install scripts (zsh, tmux) are excluded and have dedicated install-*.sh scripts
 
 stow
-tmux
 yazi
 zen-browser-bin zen-browser
 pnpm
 lsof
-zsh
 ghostty

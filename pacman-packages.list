@@ -1,0 +1,5 @@
+# Pacman packages for Omarchy system
+# Format: package_name [binary_name]
+# If binary_name is different from package_name, specify it after the package name
+
+ripgrep rg

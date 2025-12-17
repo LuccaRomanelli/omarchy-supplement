@@ -3,7 +3,7 @@
 set -e
 
 # Install tmux
-yay -S --noconfirm --needed tmux
+./install-yay-package.sh tmux
 
 # Check if tmux is installed
 if ! command -v tmux &>/dev/null; then

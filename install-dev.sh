@@ -8,6 +8,4 @@ if ! command -v laravel &>/dev/null; then
     omarchy-install-dev-env laravel
 fi
 
-if ! command -v pnpm &>/dev/null; then
-    yay -S --noconfirm --needed pnpm
-fi
+./install-yay-package.sh pnpm

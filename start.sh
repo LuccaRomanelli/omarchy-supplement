@@ -8,6 +8,7 @@
 
 # Individual installs with post-install setup or special requirements
 ./install-obisidian-vault.sh
+./install-dotfiles.sh
 ./install-zsh.sh
 ./install-dev.sh
 ./install-tmux.sh
@@ -15,7 +16,6 @@
 ./install-ai-tools.sh
 ./install-omarchy-themes.sh
 ./install-omarchy-webapps.sh
-./install-dotfiles.sh
 ./set-shell.sh
 ./uninstall-omarchy-apps.sh
 ./uninstall-omarchy-webapps.sh

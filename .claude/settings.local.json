@@ -10,7 +10,15 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nRefactor: Centralize package installation with yay and pacman\n\nThis commit introduces centralized package installation scripts to eliminate\ncode duplication and improve maintainability across the repository.\n\n## New Files\n- install-yay-package.sh: Core yay package installer with binary name support\n- install-pacman-package.sh: Core pacman package installer\n- install-yay-packages.sh: Batch installer for yay packages\n- install-pacman-packages.sh: Batch installer for pacman packages\n- yay-packages.list: Central registry of yay packages (8 packages)\n- pacman-packages.list: Central registry of pacman packages (ripgrep)\n\n## Updated Files\n- Refactored 9 install scripts to use centralized installers\n- Fixed copy-paste errors in comments (install-lsof.sh, install-yazi.sh, install-ripgrep.sh)\n- Preserved post-install setup in install-zsh.sh (Oh-My-Zsh) and install-tmux.sh (TPM)\n- Updated CLAUDE.md with new installation utilities documentation\n\n## Benefits\n- DRY principle: Single source of truth for package installation logic\n- Easier maintenance: Update installation behavior in one place\n- Consistent error handling and package existence checks\n- Centralized package management via list files\n- Proper handling of package/binary name mismatches\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push:*)",
       "Bash(gh pr create:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cat:*)",
+      "Bash(mise ls:*)",
+      "Bash(node --version:*)",
+      "Bash(mise list-all:*)",
+      "Bash(mise --version:*)",
+      "Bash(grep:*)",
+      "Bash(./install-dev.sh:*)",
+      "Bash(mise current:*)"
     ],
     "deny": []
   }

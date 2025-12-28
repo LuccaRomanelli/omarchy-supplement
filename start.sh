@@ -29,6 +29,7 @@ STEPS=(
     "uninstall-omarchy-webapps.sh"
     "install-hyprland-overrides.sh"
     "yopki.sh"
+    "usb-modeswitch.sh"
 )
 
 # Create state directory if needed

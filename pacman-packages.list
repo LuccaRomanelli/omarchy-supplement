@@ -3,3 +3,5 @@
 # If binary_name is different from package_name, specify it after the package name
 
 ripgrep rg
+usbutils lsusb
+usb_modeswitch

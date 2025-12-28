@@ -2,7 +2,7 @@
 
 THEMES_DIR="$HOME/.config/omarchy/themes"
 
-# Função que mapeia URL -> nome de diretório real do tema
+# Function that maps URL -> actual theme directory name
 get_theme_dir_name() {
     local repo_url="$1"
 
@@ -50,7 +50,7 @@ get_theme_dir_name() {
             echo "omacarchy"
             ;;
         *)
-            # fallback: usa o basename sem .git
+            # fallback: use basename without .git
             basename "$repo_url" .git
             ;;
     esac
@@ -74,9 +74,9 @@ install_theme_if_needed() {
     theme_dir="$(get_theme_dir_name "$repo_url")"
 
     if is_theme_installed "$repo_url"; then
-        echo "✓ Tema '$theme_dir' já está instalado. Pulando..."
+        echo "Theme '$theme_dir' is already installed. Skipping..."
     else
-        echo "→ Instalando tema '$theme_dir' a partir de '$repo_url'..."
+        echo "Installing theme '$theme_dir' from '$repo_url'..."
         omarchy-theme-install "$repo_url"
     fi
 }
@@ -101,4 +101,4 @@ install_theme_if_needed "https://github.com/RiO7MAKK3R/omarchy-omacarchy-theme"
 curl -fsSL https://imbypass.github.io/omarchy-theme-hook/install.sh | bash
 
 echo ""
-echo "✓ Instalação concluída!"
+echo "Installation complete!"

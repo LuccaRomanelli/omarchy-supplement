@@ -2,9 +2,9 @@
 
 # Usage: ./git_sync_repo.sh <REPO_URL> [REPO_NAME] [BRANCH] [BASE_DIR]
 # - REPO_URL: required
-# - REPO_NAME: opcional (default: name from URL)
-# - BRANCH: opcional (default: main)
-# - BASE_DIR: opcional (default: $HOME)
+# - REPO_NAME: optional (default: name from URL)
+# - BRANCH: optional (default: main)
+# - BASE_DIR: optional (default: $HOME)
 
 set -euo pipefail
 
@@ -14,12 +14,12 @@ BRANCH="${3:-main}"
 BASE_DIR="${4:-$HOME}"
 
 if [ -z "$REPO_URL" ]; then
-  echo "Erro: REPO_URL é obrigatório."
-  echo "Uso: $0 <REPO_URL> [REPO_NAME] [BRANCH] [BASE_DIR]"
+  echo "Error: REPO_URL is required."
+  echo "Usage: $0 <REPO_URL> [REPO_NAME] [BRANCH] [BASE_DIR]"
   exit 1
 fi
 
-# Se REPO_NAME não foi passado, extrai da URL (parte depois da última / sem .git)
+# If REPO_NAME was not provided, extract from URL (part after last / without .git)
 if [ -z "$REPO_NAME" ]; then
   REPO_NAME="$(basename "$REPO_URL" .git)"
 fi
@@ -32,14 +32,14 @@ echo "Base Dir : $BASE_DIR"
 cd "$BASE_DIR"
 
 if [ -d "$REPO_NAME/.git" ]; then
-  echo "Repositório '$REPO_NAME' já existe. Fazendo pull da branch '$BRANCH'..."
+  echo "Repository '$REPO_NAME' already exists. Pulling branch '$BRANCH'..."
   cd "$REPO_NAME"
   git fetch origin
   git checkout "$BRANCH" || git checkout -b "$BRANCH" origin/"$BRANCH"
   git pull origin "$BRANCH"
-  echo "Pull concluído."
+  echo "Pull completed."
 else
-  echo "Repositório '$REPO_NAME' não existe. Clonando..."
+  echo "Repository '$REPO_NAME' does not exist. Cloning..."
   git clone --branch "$BRANCH" "$REPO_URL" "$REPO_NAME"
-  echo "Clone concluído."
+  echo "Clone completed."
 fi

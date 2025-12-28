@@ -48,7 +48,7 @@ Centralized package installation scripts that handle package existence checks an
 
 **Package List Files**
 - `yay-packages.list` - Central registry of all yay packages (stow, tmux, yazi, zen-browser-bin, pnpm, lsof, zsh, ghostty)
-- `pacman-packages.list` - Central registry of all pacman packages (ripgrep)
+- `pacman-packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch)
 - Format: `package_name [binary_name]` (one per line)
 
 ### Dotfiles Management
@@ -105,6 +105,15 @@ The centralized installers handle:
 - Supporting package/binary name mismatches (e.g., zen-browser-bin vs zen-browser)
 
 Individual `install-*.sh` scripts delegate to these centralized installers, maintaining post-installation setup where needed (e.g., Oh-My-Zsh for zsh, TPM for tmux).
+
+### USB Mode Switch (`usb-modeswitch.sh`)
+
+Utility script for USB modem detection and mode switching:
+- Automatically installs `usb_modeswitch` and `usbutils` if not present
+- Detects USB devices from known vendors (MediaTek, Huawei, ZTE, T&A Mobile Phones)
+- Switches devices from storage mode to modem mode automatically
+- Non-interactive for use in automated installations
+- Shows network interfaces after switching
 
 ## Key Configuration Details
 
@@ -186,6 +195,11 @@ Hyprland multi-monitor setup:
 ./set-shell.sh                  # Change default shell to zsh
 ```
 
+### USB Mode Switch
+```bash
+./usb-modeswitch.sh             # Detect and switch USB modems from storage mode
+```
+
 ### Individual Package Installations
 
 **Scripts with post-install setup:**
@@ -242,6 +256,7 @@ The `start.sh` script supports **auto-resume after reboot** and executes in two 
 15. Uninstall Omarchy webapps (cleanup)
 16. Hyprland overrides
 17. Yopki
+18. USB Mode Switch (detect and switch USB modems)
 
 ### Auto-Resume System
 

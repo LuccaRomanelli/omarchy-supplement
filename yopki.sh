@@ -1,40 +1,40 @@
 #!/bin/bash
 
-# Script para sincronizar todos os repositórios da Yopki
+# Script to sync all Yopki repositories
 # Usage: ./sync_yopki_repos.sh
 
 set -euo pipefail
 
-# Caminho para o script git_sync_repo.sh
+# Path to git_sync_repo.sh script
 ORIGINAL_DIR=$(pwd)
 SYNC_SCRIPT="$ORIGINAL_DIR/git_sync_repo.sh"
 
-# Verifica se o script git_sync_repo.sh existe
+# Check if git_sync_repo.sh script exists
 if [ ! -f "$SYNC_SCRIPT" ]; then
-  echo "Erro: Script '$SYNC_SCRIPT' não encontrado."
-  echo "Certifique-se de que git_sync_repo.sh está no mesmo diretório."
+  echo "Error: Script '$SYNC_SCRIPT' not found."
+  echo "Make sure git_sync_repo.sh is in the same directory."
   exit 1
 fi
 
-# Torna o script executável se necessário
+# Make script executable if needed
 chmod +x "$SYNC_SCRIPT"
 
-# Diretório base para os repositórios Yopki
+# Base directory for Yopki repositories
 BASE_DIR="$HOME/yopki"
 
 echo "=========================================="
-echo " Preparando diretório base: $BASE_DIR"
+echo " Preparing base directory: $BASE_DIR"
 echo "=========================================="
 
-# Cria o diretório $HOME/yopki se não existir
+# Create $HOME/yopki directory if it doesn't exist
 mkdir -p "$BASE_DIR"
 
 echo "=========================================="
-echo "Sincronizando repositórios da Yopki"
+echo "Syncing Yopki repositories"
 echo "=========================================="
 echo ""
 
-# Lista de repositórios
+# Repository list
 REPOS=(
   "git@github.com:yopkiinc/trip-planner-web.git"
   "git@github.com:yopkiinc/trip-planner-backend.git"
@@ -42,7 +42,7 @@ REPOS=(
   "git@github.com:yopkiinc/yopki-dev.git"
 )
 
-# Sincroniza cada repositório
+# Sync each repository
 for REPO in "${REPOS[@]}"; do
   echo ""
   echo "=========================================="
@@ -51,9 +51,9 @@ for REPO in "${REPOS[@]}"; do
 done
 
 echo ""
-echo "✅ Todos os repositórios foram sincronizados!"
+echo "All repositories have been synced!"
 echo ""
-echo "Repositórios disponíveis em $BASE_DIR:"
+echo "Repositories available at $BASE_DIR:"
 echo "  - $BASE_DIR/trip-planner-web"
 echo "  - $BASE_DIR/trip-planner-backend"
 echo "  - $BASE_DIR/trip-planner-bff"

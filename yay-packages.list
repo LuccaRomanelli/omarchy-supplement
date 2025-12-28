@@ -9,3 +9,4 @@ zen-browser-bin zen-browser
 pnpm
 lsof
 ghostty
+jellyfin-mpv-shim

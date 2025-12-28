@@ -220,21 +220,36 @@ The installation scripts assume:
 
 ## Installation Script Execution Order
 
-The `start.sh` script executes installation scripts in the following order:
-1. Batch install YAY packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty)
-2. Batch install Pacman packages (ripgrep)
-3. Obsidian vault
-4. Zsh shell (with Oh-My-Zsh post-install)
-5. Development tools (node, laravel, pnpm)
-6. Tmux (with TPM post-install)
-7. Shell scripts repository
-8. AI tools (Claude, Gemini, AbacusAI CLIs)
-9. Omarchy themes
-10. Omarchy webapps
-11. Dotfiles (stowed configurations)
-12. Set default shell to zsh
-13. Uninstall Omarchy apps (cleanup)
-14. Uninstall Omarchy webapps (cleanup)
-15. Hyprland overrides
+The `start.sh` script supports **auto-resume after reboot** and executes in two phases:
 
-**Note:** Most packages are now installed via batch installers (`install-yay-packages.sh` and `install-pacman-packages.sh`) for efficiency. Individual install scripts are kept only for packages requiring post-installation setup (zsh, tmux) or special handling (dev tools).
+### Phase 1: Pre-Reboot (shell setup)
+1. Install zsh (with Oh-My-Zsh + plugins)
+2. Set default shell to zsh
+3. **REBOOT** - Creates autostart entry and reboots to apply shell change
+
+### Phase 2: Post-Reboot (main installation)
+4. Batch install YAY packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty)
+5. Batch install Pacman packages (ripgrep)
+6. Obsidian vault
+7. Dotfiles (stowed configurations)
+8. Development tools (node, laravel, pnpm)
+9. Tmux (with TPM post-install)
+10. Shell scripts repository
+11. AI tools (Claude, Gemini, AbacusAI CLIs)
+12. Omarchy themes
+13. Omarchy webapps
+14. Uninstall Omarchy apps (cleanup)
+15. Uninstall Omarchy webapps (cleanup)
+16. Hyprland overrides
+17. Yopki
+
+### Auto-Resume System
+
+The installation uses a state file (`~/.local/state/omarchy-supplement/install-progress`) to track progress:
+- Saves current step after each successful installation
+- Creates autostart entry (`~/.config/autostart/omarchy-supplement-resume.desktop`) before reboot
+- Automatically continues from saved step after login
+- Cleans up state and autostart files when complete
+- Skips reboot if zsh is already the default shell
+
+**Note:** Most packages are installed via batch installers for efficiency. Individual install scripts are kept for packages requiring post-installation setup (zsh, tmux) or special handling (dev tools).

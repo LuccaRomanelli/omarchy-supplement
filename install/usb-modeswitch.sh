@@ -4,6 +4,7 @@
 # Runs automatically without prompts for use in start.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "=== USB Mode Switch ==="
 echo ""
@@ -11,13 +12,13 @@ echo ""
 # Check if usb_modeswitch is installed, install if not
 if ! command -v usb_modeswitch &>/dev/null; then
     echo "usb_modeswitch not found, installing..."
-    "$SCRIPT_DIR/install-pacman-package.sh" usb_modeswitch
+    "$ROOT_DIR/pacman/install-package.sh" usb_modeswitch
 fi
 
 # Check if lsusb is installed, install if not
 if ! command -v lsusb &>/dev/null; then
     echo "lsusb not found, installing..."
-    "$SCRIPT_DIR/install-pacman-package.sh" usbutils lsusb
+    "$ROOT_DIR/pacman/install-package.sh" usbutils lsusb
 fi
 
 echo "Connected USB devices:"

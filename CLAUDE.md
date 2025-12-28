@@ -4,58 +4,107 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is an Omarchy Linux supplemental configuration repository that provides automated installation scripts for system setup, dotfiles management, and application configuration. It uses a modular approach with individual install scripts that can be run independently or collectively via `start.sh`.
+This is an Omarchy Linux supplemental configuration repository that provides automated installation scripts for system setup, dotfiles management, and application configuration. It uses a modular approach with scripts organized into folders by category.
+
+## Folder Structure
+
+```
+omarchy-supplement/
+├── start.sh                      # Main entry point
+├── hyprland-overrides.conf       # Hyprland window manager config
+│
+├── yay/                          # YAY package management
+│   ├── install-package.sh        # Core single-package installer
+│   ├── install-packages.sh       # Batch installer
+│   ├── packages.list             # Package registry
+│   ├── zsh.sh                    # Zsh + Oh-My-Zsh + plugins
+│   └── tmux.sh                   # Tmux + TPM
+│
+├── pacman/                       # Pacman package management
+│   ├── install-package.sh        # Core single-package installer
+│   ├── install-packages.sh       # Batch installer
+│   └── packages.list             # Package registry
+│
+├── install/                      # Installation scripts
+│   ├── dotfiles.sh               # Stow-based dotfiles
+│   ├── shell-scripts.sh          # Shell scripts repo
+│   ├── ai-tools.sh               # AI CLI tools
+│   ├── nhost.sh                  # Nhost CLI
+│   ├── omarchy-themes.sh         # Omarchy themes
+│   ├── omarchy-webapps.sh        # Webapp shortcuts
+│   ├── hyprland-overrides.sh     # Hyprland config setup
+│   ├── obsidian-vault.sh         # Obsidian vault
+│   └── usb-modeswitch.sh         # USB modem switching
+│
+├── dev/                          # Development-related scripts
+│   ├── dev.sh                    # Node/mise + Laravel + pnpm
+│   └── yopki.sh                  # Yopki project repos
+│
+├── uninstall/                    # Uninstall scripts
+│   ├── omarchy-apps.sh           # Remove packages
+│   ├── omarchy-themes.sh         # Remove themes
+│   └── omarchy-webapps.sh        # Remove webapps
+│
+└── lib/                          # Shared utilities
+    ├── git_sync_repo.sh          # Git clone/pull utility
+    └── set-shell.sh              # Change default shell
+```
 
 ## Primary Entry Points
 
-- `./start.sh` - Main installation entry point that runs multiple installation scripts
-- Individual `install-*.sh` scripts can be run independently for specific components
+- `./start.sh` - Main installation entry point that runs all installation scripts in order
+- Individual scripts can be run independently from their folders
 
 ## Core Architecture
 
-### Git Repository Synchronization (`git_sync_repo.sh`)
+### Git Repository Synchronization (`lib/git_sync_repo.sh`)
 
 Central utility script used by multiple installers to clone or update git repositories:
-- Usage: `./git_sync_repo.sh <REPO_URL> [REPO_NAME] [BRANCH]`
+- Usage: `./lib/git_sync_repo.sh <REPO_URL> [REPO_NAME] [BRANCH]`
 - Automatically clones if repository doesn't exist, otherwise pulls latest changes
 - Default branch is `main` if not specified
-- Used by `install-dotfiles.sh` and `install-shell-scripts.sh`
+- Used by `install/dotfiles.sh`, `install/shell-scripts.sh`, and `dev/yopki.sh`
 
-### Core Installation Utilities
+### YAY Package Management (`yay/`)
 
-Centralized package installation scripts that handle package existence checks and installation:
-
-**YAY Package Installer (`install-yay-package.sh`)**
-- Usage: `./install-yay-package.sh <package_name> [binary_name]`
+**Core Installer (`yay/install-package.sh`)**
+- Usage: `./yay/install-package.sh <package_name> [binary_name]`
 - Checks if binary exists using `command -v`
 - Installs package via yay with `--noconfirm --needed` flags if not present
 - If binary_name differs from package_name, specify it as second parameter
-- Example: `./install-yay-package.sh zen-browser-bin zen-browser`
+- Example: `./yay/install-package.sh zen-browser-bin zen-browser`
 
-**Pacman Package Installer (`install-pacman-package.sh`)**
-- Usage: `./install-pacman-package.sh <package_name> [binary_name]`
-- Same functionality as yay installer but uses `sudo pacman`
-- Example: `./install-pacman-package.sh ripgrep rg`
-
-**Batch YAY Installer (`install-yay-packages.sh`)**
-- Installs all packages listed in `yay-packages.list`
+**Batch Installer (`yay/install-packages.sh`)**
+- Installs all packages listed in `yay/packages.list`
 - Reads one package per line with optional binary name
 - Skips empty lines and comments (lines starting with #)
 
-**Batch Pacman Installer (`install-pacman-packages.sh`)**
-- Installs all packages listed in `pacman-packages.list`
+**Complex Installers:**
+- `yay/zsh.sh` - Installs zsh + Oh-My-Zsh + plugins
+- `yay/tmux.sh` - Installs tmux + TPM (Tmux Plugin Manager)
+
+### Pacman Package Management (`pacman/`)
+
+**Core Installer (`pacman/install-package.sh`)**
+- Usage: `./pacman/install-package.sh <package_name> [binary_name]`
+- Same functionality as yay installer but uses `sudo pacman`
+- Example: `./pacman/install-package.sh ripgrep rg`
+
+**Batch Installer (`pacman/install-packages.sh`)**
+- Installs all packages listed in `pacman/packages.list`
 - Same format as yay batch installer
 
-**Package List Files**
-- `yay-packages.list` - Central registry of all yay packages (stow, tmux, yazi, zen-browser-bin, pnpm, lsof, zsh, ghostty)
-- `pacman-packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch)
+### Package List Files
+
+- `yay/packages.list` - Central registry of all yay packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty, jellyfin-mpv-shim)
+- `pacman/packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch)
 - Format: `package_name [binary_name]` (one per line)
 
 ### Dotfiles Management
 
 Uses GNU Stow for symlink management:
 - Dotfiles are stored in a separate repository: `git@github.com:LuccaRomanelli/dotfiles.git`
-- `install-dotfiles.sh` clones/updates the dotfiles repo and stows configurations for:
+- `install/dotfiles.sh` clones/updates the dotfiles repo and stows configurations for:
   - zshrc
   - ghostty (terminal emulator)
   - tmux
@@ -69,13 +118,13 @@ Uses GNU Stow for symlink management:
 
 Custom shell scripts are maintained in a separate repository:
 - Repository: `https://github.com/LuccaRomanelli/shell.git`
-- Cloned to `~/shell` via `install-shell-scripts.sh`
+- Cloned to `~/shell` via `install/shell-scripts.sh`
 - Referenced by Hyprland keybindings for custom workflows
 
 ### Hyprland Configuration Override System
 
 `hyprland-overrides.conf` provides custom Hyprland window manager settings:
-- Installed via `install-hyprland-overrides.sh` which adds a source line to `~/.config/hypr/hyprland.conf`
+- Installed via `install/hyprland-overrides.sh` which adds a source line to `~/.config/hypr/hyprland.conf`
 - Defines multi-monitor setup (ultrawide + vertical LG TV)
 - Custom keybindings for webapps and shell scripts
 - Input device configuration (keyboard repeat rate, mouse sensitivity, touchpad)
@@ -92,21 +141,7 @@ The repository integrates with Omarchy's custom commands:
 - `omarchy-cmd-screenshot` - Custom screenshot tool
 - `omarchy-menu screenrecord` - Screen recording menu
 
-### Package Installation Pattern
-
-The repository uses centralized installation scripts for consistency:
-1. **Individual package installations:** Call `install-yay-package.sh` or `install-pacman-package.sh` with package name
-2. **Batch installations:** Use `install-yay-packages.sh` or `install-pacman-packages.sh` to install from list files
-3. **Package management:** Add/remove packages by editing `yay-packages.list` or `pacman-packages.list`
-
-The centralized installers handle:
-- Checking if package binary exists using `command -v`
-- Installing via `yay` or `pacman` with `--noconfirm --needed` flags
-- Supporting package/binary name mismatches (e.g., zen-browser-bin vs zen-browser)
-
-Individual `install-*.sh` scripts delegate to these centralized installers, maintaining post-installation setup where needed (e.g., Oh-My-Zsh for zsh, TPM for tmux).
-
-### USB Mode Switch (`usb-modeswitch.sh`)
+### USB Mode Switch (`install/usb-modeswitch.sh`)
 
 Utility script for USB modem detection and mode switching:
 - Automatically installs `usb_modeswitch` and `usbutils` if not present
@@ -117,18 +152,25 @@ Utility script for USB modem detection and mode switching:
 
 ## Key Configuration Details
 
-### AI Tools Installation (`install-ai-tools.sh`)
+### AI Tools Installation (`install/ai-tools.sh`)
 
 Installs CLI tools for AI services via npm:
 - `@anthropic-ai/claude-code` (Claude CLI)
 - `@google/gemini-cli` (Gemini CLI)
 - `@abacus-ai/cli` (AbacusAI CLI)
 
-### Nhost CLI Installation (`install-nhost.sh`)
+### Nhost CLI Installation (`install/nhost.sh`)
 
 Installs the Nhost CLI for backend-as-a-service development:
 - Uses official installer script from nhost repository
 - Provides local development environment for Nhost projects
+
+### Development Tools (`dev/dev.sh`)
+
+Installs development environment:
+- Node.js versions via mise (latest + LTS 24)
+- Laravel via omarchy-install-dev-env
+- pnpm package manager
 
 ### Hyprland Keybindings
 
@@ -163,69 +205,55 @@ Hyprland multi-monitor setup:
 
 ### Install Specific Components
 ```bash
-./install-dotfiles.sh      # Update dotfiles configurations
-./install-hyprland-overrides.sh  # Apply Hyprland customizations
-./install-shell-scripts.sh # Update custom shell scripts
-./install-ai-tools.sh      # Install/update AI CLI tools
+./install/dotfiles.sh           # Update dotfiles configurations
+./install/hyprland-overrides.sh # Apply Hyprland customizations
+./install/shell-scripts.sh      # Update custom shell scripts
+./install/ai-tools.sh           # Install/update AI CLI tools
 ```
 
 ### Batch Package Installation
 ```bash
-./install-yay-packages.sh    # Install all yay packages from list
-./install-pacman-packages.sh # Install all pacman packages from list
+./yay/install-packages.sh       # Install all yay packages from list
+./pacman/install-packages.sh    # Install all pacman packages from list
 
 # Or install individual packages
-./install-yay-package.sh <package> [binary]
-./install-pacman-package.sh <package> [binary]
+./yay/install-package.sh <package> [binary]
+./pacman/install-package.sh <package> [binary]
 ```
 
 ### Theme Management
 ```bash
-./install-omarchy-themes.sh   # Install multiple Omarchy themes
-./uninstall-omarchy-themes.sh  # Remove themes
+./install/omarchy-themes.sh     # Install multiple Omarchy themes
+./uninstall/omarchy-themes.sh   # Remove themes
 ```
 
 ### Webapp Management
 ```bash
-./install-omarchy-webapps.sh    # Install webapp shortcuts
-./uninstall-omarchy-webapps.sh  # Remove webapp shortcuts
+./install/omarchy-webapps.sh    # Install webapp shortcuts
+./uninstall/omarchy-webapps.sh  # Remove webapp shortcuts
 ```
 
 ### App Management
 ```bash
-./uninstall-omarchy-apps.sh     # Remove Omarchy applications
+./uninstall/omarchy-apps.sh     # Remove Omarchy applications
 ```
 
 ### Shell Configuration
 ```bash
-./set-shell.sh                  # Change default shell to zsh
+./lib/set-shell.sh              # Change default shell to zsh
 ```
 
 ### USB Mode Switch
 ```bash
-./usb-modeswitch.sh             # Detect and switch USB modems from storage mode
+./install/usb-modeswitch.sh     # Detect and switch USB modems from storage mode
 ```
 
-### Individual Package Installations
-
-**Scripts with post-install setup:**
+### Complex Package Installations
 ```bash
-./install-zsh.sh                # Install zsh + Oh-My-Zsh + plugins
-./install-tmux.sh               # Install tmux + TPM (Tmux Plugin Manager)
-./install-dev.sh                # Install node, laravel, pnpm
+./yay/zsh.sh                    # Install zsh + Oh-My-Zsh + plugins
+./yay/tmux.sh                   # Install tmux + TPM (Tmux Plugin Manager)
+./dev/dev.sh                    # Install node, laravel, pnpm
 ```
-
-**Simple package installers** (can use batch installers instead):
-```bash
-./install-ghostty.sh            # Install Ghostty terminal emulator
-./install-zen.sh                # Install Zen browser
-./install-yazi.sh               # Install Yazi file manager
-./install-lsof.sh               # Install lsof utility
-./install-ripgrep.sh            # Install ripgrep search tool
-./install-stow.sh               # Install GNU Stow
-```
-
-**Note:** The simple package installers above are kept for individual use, but `start.sh` uses batch installers for efficiency.
 
 ## Dependencies
 
@@ -233,7 +261,7 @@ The installation scripts assume:
 - Arch Linux with `yay` AUR helper installed
 - `pacman` package manager
 - `git` for repository cloning
-- `stow` for dotfiles management (installed via `install-stow.sh`)
+- `stow` for dotfiles management (installed via batch installer)
 - Node.js and npm (for AI tools installation)
 - Omarchy Linux base system with custom commands
 - Hyprland window manager
@@ -243,27 +271,27 @@ The installation scripts assume:
 The `start.sh` script supports **auto-resume after reboot** and executes in two phases:
 
 ### Phase 1: Pre-Reboot (shell setup)
-1. Install zsh (with Oh-My-Zsh + plugins)
-2. Set default shell to zsh
+1. Install zsh (with Oh-My-Zsh + plugins) - `yay/zsh.sh`
+2. Set default shell to zsh - `lib/set-shell.sh`
 3. **REBOOT** - Creates autostart entry and reboots to apply shell change
 
 ### Phase 2: Post-Reboot (main installation)
-4. Batch install YAY packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty)
-5. Batch install Pacman packages (ripgrep)
-6. Obsidian vault
-7. Dotfiles (stowed configurations)
-8. Development tools (node, laravel, pnpm)
-9. Tmux (with TPM post-install)
-10. Shell scripts repository
-11. AI tools (Claude, Gemini, AbacusAI CLIs)
-12. Nhost CLI
-13. Omarchy themes
-14. Omarchy webapps
-15. Uninstall Omarchy apps (cleanup)
-16. Uninstall Omarchy webapps (cleanup)
-17. Hyprland overrides
-18. Yopki
-19. USB Mode Switch (detect and switch USB modems)
+4. Batch install YAY packages - `yay/install-packages.sh`
+5. Batch install Pacman packages - `pacman/install-packages.sh`
+6. Obsidian vault - `install/obsidian-vault.sh`
+7. Dotfiles (stowed configurations) - `install/dotfiles.sh`
+8. Development tools - `dev/dev.sh`
+9. Tmux (with TPM post-install) - `yay/tmux.sh`
+10. Shell scripts repository - `install/shell-scripts.sh`
+11. AI tools - `install/ai-tools.sh`
+12. Nhost CLI - `install/nhost.sh`
+13. Omarchy themes - `install/omarchy-themes.sh`
+14. Omarchy webapps - `install/omarchy-webapps.sh`
+15. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
+16. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
+17. Hyprland overrides - `install/hyprland-overrides.sh`
+18. Yopki project repos - `dev/yopki.sh`
+19. USB Mode Switch - `install/usb-modeswitch.sh`
 
 ### Auto-Resume System
 
@@ -273,5 +301,3 @@ The installation uses a state file (`~/.local/state/omarchy-supplement/install-p
 - Automatically continues from saved step after login
 - Cleans up state and autostart files when complete
 - Skips reboot if zsh is already the default shell
-
-**Note:** Most packages are installed via batch installers for efficiency. Individual install scripts are kept for packages requiring post-installation setup (zsh, tmux) or special handling (dev tools).

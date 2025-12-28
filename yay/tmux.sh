@@ -2,8 +2,10 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Install tmux
-./install-yay-package.sh tmux
+"$SCRIPT_DIR/install-package.sh" tmux
 
 # Check if tmux is installed
 if ! command -v tmux &>/dev/null; then

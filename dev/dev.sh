@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 # Install Node.js versions (latest + LTS 24)
 if command -v mise &>/dev/null; then
     echo "Installing Node.js versions via mise..."
@@ -12,4 +15,4 @@ if ! command -v laravel &>/dev/null; then
     omarchy-install-dev-env laravel
 fi
 
-./install-yay-package.sh pnpm
+"$ROOT_DIR/yay/install-package.sh" pnpm

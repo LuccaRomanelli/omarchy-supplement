@@ -6,8 +6,9 @@
 set -euo pipefail
 
 # Path to git_sync_repo.sh script
-ORIGINAL_DIR=$(pwd)
-SYNC_SCRIPT="$ORIGINAL_DIR/git_sync_repo.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+SYNC_SCRIPT="$ROOT_DIR/lib/git_sync_repo.sh"
 
 # Check if git_sync_repo.sh script exists
 if [ ! -f "$SYNC_SCRIPT" ]; then

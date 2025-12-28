@@ -20,3 +20,4 @@
 ./uninstall-omarchy-apps.sh
 ./uninstall-omarchy-webapps.sh
 ./install-hyprland-overrides.sh
+./yopki.sh

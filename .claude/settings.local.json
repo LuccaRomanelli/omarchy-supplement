@@ -18,7 +18,8 @@
       "Bash(mise --version:*)",
       "Bash(grep:*)",
       "Bash(./install-dev.sh:*)",
-      "Bash(mise current:*)"
+      "Bash(mise current:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }

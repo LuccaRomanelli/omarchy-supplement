@@ -124,6 +124,12 @@ Installs CLI tools for AI services via npm:
 - `@google/gemini-cli` (Gemini CLI)
 - `@abacus-ai/cli` (AbacusAI CLI)
 
+### Nhost CLI Installation (`install-nhost.sh`)
+
+Installs the Nhost CLI for backend-as-a-service development:
+- Uses official installer script from nhost repository
+- Provides local development environment for Nhost projects
+
 ### Hyprland Keybindings
 
 Custom keybindings defined in `hyprland-overrides.conf`:
@@ -250,13 +256,14 @@ The `start.sh` script supports **auto-resume after reboot** and executes in two 
 9. Tmux (with TPM post-install)
 10. Shell scripts repository
 11. AI tools (Claude, Gemini, AbacusAI CLIs)
-12. Omarchy themes
-13. Omarchy webapps
-14. Uninstall Omarchy apps (cleanup)
-15. Uninstall Omarchy webapps (cleanup)
-16. Hyprland overrides
-17. Yopki
-18. USB Mode Switch (detect and switch USB modems)
+12. Nhost CLI
+13. Omarchy themes
+14. Omarchy webapps
+15. Uninstall Omarchy apps (cleanup)
+16. Uninstall Omarchy webapps (cleanup)
+17. Hyprland overrides
+18. Yopki
+19. USB Mode Switch (detect and switch USB modems)
 
 ### Auto-Resume System
 

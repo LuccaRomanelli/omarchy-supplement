@@ -23,6 +23,7 @@ STEPS=(
     "install-tmux.sh"
     "install-shell-scripts.sh"
     "install-ai-tools.sh"
+    "install-nhost.sh"
     "install-omarchy-themes.sh"
     "install-omarchy-webapps.sh"
     "uninstall-omarchy-apps.sh"

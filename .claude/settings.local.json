@@ -19,7 +19,12 @@
       "Bash(grep:*)",
       "Bash(./install-dev.sh:*)",
       "Bash(mise current:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(wc:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)"
     ],
     "deny": []
   }

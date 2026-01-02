@@ -1,137 +1,99 @@
 #!/bin/bash
 
-# Omarchy Supplement Installation Script with Auto-Resume
-# Supports automatic continuation after reboot
+# Omarchy Supplement Installation Script - Continuous Installation
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-STATE_DIR="$HOME/.local/state/omarchy-supplement"
-STATE_FILE="$STATE_DIR/install-progress"
-AUTOSTART_DIR="$HOME/.config/autostart"
-AUTOSTART_FILE="$AUTOSTART_DIR/omarchy-supplement-resume.desktop"
 
-# Installation steps (order matters)
-# First install zsh, then reboot, then everything else
-STEPS=(
-    "yay/zsh.sh"
-    "lib/set-shell.sh"
-    "REBOOT"  # Special marker - reboot here and continue after
-    "yay/install-packages.sh"
-    "pacman/install-packages.sh"
-    "install/obsidian-vault.sh"
-    "install/dotfiles.sh"
-    "dev/dev.sh"
-    "yay/tmux.sh"
-    "install/shell-scripts.sh"
-    "install/ai-tools.sh"
-    "install/nhost.sh"
-    "install/omarchy-themes.sh"
-    "install/omarchy-webapps.sh"
-    "uninstall/omarchy-apps.sh"
-    "uninstall/omarchy-webapps.sh"
-    "install/hyprland-overrides.sh"
-    "dev/yopki.sh"
-    "install/usb-modeswitch.sh"
-)
+echo "=== Omarchy Supplement Installation ==="
+echo ""
 
-# Create state directory if needed
-mkdir -p "$STATE_DIR"
+# Step 1: Install Zsh + Oh-My-Zsh + plugins (runs in bash)
+echo "[1/18] Installing Zsh + Oh-My-Zsh + plugins..."
+bash "$SCRIPT_DIR/yay/zsh.sh"
+echo ""
 
-# Get current step (default to 0)
-get_current_step() {
-    if [[ -f "$STATE_FILE" ]]; then
-        cat "$STATE_FILE"
-    else
-        echo 0
-    fi
-}
+# Check if zsh was installed successfully
+if ! command -v zsh &>/dev/null; then
+    echo "Error: Zsh installation failed. Exiting."
+    exit 1
+fi
 
-# Save current step
-save_step() {
-    echo "$1" > "$STATE_FILE"
-}
+# Steps 2-17: Run remaining installations in zsh
+echo "[2/18] Installing YAY packages..."
+zsh "$SCRIPT_DIR/yay/install-packages.sh"
+echo ""
 
-# Clean up state and autostart
-cleanup() {
-    rm -f "$STATE_FILE"
-    rm -f "$AUTOSTART_FILE"
-    echo "Installation complete! State cleaned up."
-}
+echo "[3/18] Installing Pacman packages..."
+zsh "$SCRIPT_DIR/pacman/install-packages.sh"
+echo ""
 
-# Create autostart entry for resume after reboot
-create_autostart() {
-    mkdir -p "$AUTOSTART_DIR"
-    cat > "$AUTOSTART_FILE" << EOF
-[Desktop Entry]
-Type=Application
-Name=Omarchy Supplement Resume
-Exec=ghostty -e bash -c 'cd $SCRIPT_DIR && ./start.sh; exec zsh'
-X-GNOME-Autostart-enabled=true
-Comment=Resume omarchy-supplement installation after reboot
-EOF
-    echo "Autostart entry created for resume after reboot."
-}
+echo "[4/18] Setting up Obsidian vault..."
+zsh "$SCRIPT_DIR/install/obsidian-vault.sh"
+echo ""
 
-# Main installation loop
-main() {
-    local current_step=$(get_current_step)
-    local total_steps=${#STEPS[@]}
+echo "[5/18] Installing dotfiles..."
+zsh "$SCRIPT_DIR/install/dotfiles.sh"
+echo ""
 
-    echo "=== Omarchy Supplement Installation ==="
-    echo "Starting from step $((current_step + 1)) of $total_steps"
-    echo ""
+echo "[6/18] Installing development tools..."
+zsh "$SCRIPT_DIR/dev/dev.sh"
+echo ""
 
-    for ((i=current_step; i<total_steps; i++)); do
-        local step="${STEPS[$i]}"
+echo "[7/18] Installing Tmux + TPM..."
+zsh "$SCRIPT_DIR/yay/tmux.sh"
+echo ""
 
-        # Check for reboot marker
-        if [[ "$step" == "REBOOT" ]]; then
-            # Check if we already have zsh as shell (reboot already happened)
-            ZSH_PATH=$(which zsh 2>/dev/null)
-            if [[ "$SHELL" == "$ZSH_PATH" ]]; then
-                echo "Zsh is already default shell, skipping reboot..."
-                save_step $((i + 1))
-                continue
-            fi
+echo "[8/18] Installing shell scripts..."
+zsh "$SCRIPT_DIR/install/shell-scripts.sh"
+echo ""
 
-            # Need to reboot
-            echo ""
-            echo "=== REBOOT REQUIRED ==="
-            echo "Shell changed to zsh. Need to reboot to apply changes."
-            echo "Installation will continue automatically after reboot."
-            echo ""
+echo "[9/18] Installing AI tools..."
+zsh "$SCRIPT_DIR/install/ai-tools.sh"
+echo ""
 
-            # Save next step
-            save_step $((i + 1))
+echo "[10/18] Installing Nhost CLI..."
+zsh "$SCRIPT_DIR/install/nhost.sh"
+echo ""
 
-            # Create autostart
-            create_autostart
+echo "[11/18] Installing Omarchy themes..."
+zsh "$SCRIPT_DIR/install/omarchy-themes.sh"
+echo ""
 
-            # Ask for confirmation
-            read -p "Press Enter to reboot now (or Ctrl+C to cancel)..."
+echo "[12/18] Installing Omarchy webapps..."
+zsh "$SCRIPT_DIR/install/omarchy-webapps.sh"
+echo ""
 
-            # Reboot
-            systemctl reboot
-            exit 0
-        fi
+echo "[13/18] Uninstalling Omarchy apps..."
+zsh "$SCRIPT_DIR/uninstall/omarchy-apps.sh"
+echo ""
 
-        # Run the step
-        echo "[$((i + 1))/$total_steps] Running $step..."
+echo "[14/18] Uninstalling Omarchy webapps..."
+zsh "$SCRIPT_DIR/uninstall/omarchy-webapps.sh"
+echo ""
 
-        if [[ -x "$SCRIPT_DIR/$step" ]]; then
-            "$SCRIPT_DIR/$step"
-        else
-            bash "$SCRIPT_DIR/$step"
-        fi
+echo "[15/18] Installing Hyprland overrides..."
+zsh "$SCRIPT_DIR/install/hyprland-overrides.sh"
+echo ""
 
-        # Save progress after each step
-        save_step $((i + 1))
+echo "[16/18] Setting up Yopki projects..."
+zsh "$SCRIPT_DIR/dev/yopki.sh"
+echo ""
 
-        echo ""
-    done
+echo "[17/18] Configuring USB mode switch..."
+zsh "$SCRIPT_DIR/install/usb-modeswitch.sh"
+echo ""
 
-    # All done - cleanup
-    cleanup
-}
+# Step 18: Set zsh as default shell
+echo "[18/18] Setting Zsh as default shell..."
+bash "$SCRIPT_DIR/lib/set-shell.sh"
+echo ""
 
-# Run main
-main
+# All done
+echo "=== Installation Complete! ==="
+echo ""
+echo "To apply the shell change, please:"
+echo "  - Logout and login again, OR"
+echo "  - Reboot your system"
+echo ""
+echo "After that, your terminal will use Zsh with all configurations."
+echo ""

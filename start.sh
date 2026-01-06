@@ -7,6 +7,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "=== Omarchy Supplement Installation ==="
 echo ""
 
+# Installation steps (order matters)
+# First install zsh, then reboot, then everything else
+STEPS=(
+    "yay/zsh.sh"
+    "lib/set-shell.sh"
+    "REBOOT"  # Special marker - reboot here and continue after
+    "yay/install-packages.sh"
+    "pacman/install-packages.sh"
+    "install/obsidian-vault.sh"
+    "install/dotfiles.sh"
+    "dev/dev.sh"
+    "yay/tmux.sh"
+    "install/shell-scripts.sh"
+    "install/ai-tools.sh"
+    "install/nhost.sh"
+    "install/omarchy-themes.sh"
+    "install/omarchy-webapps.sh"
+    "uninstall/omarchy-apps.sh"
+    "uninstall/omarchy-webapps.sh"
+    "install/hyprland-overrides.sh"
+    "dev/yopki.sh"
+    "install/usb-modeswitch.sh"
+    "yay/iriun-webcam.sh"
+)
+
 # Step 1: Install Zsh + Oh-My-Zsh + plugins (runs in bash)
 echo "[1/18] Installing Zsh + Oh-My-Zsh + plugins..."
 bash "$SCRIPT_DIR/yay/zsh.sh"

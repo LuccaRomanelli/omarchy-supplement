@@ -97,3 +97,22 @@ if [ ! -f .env ]; then
 fi
 
 pnpm i
+
+echo "=========================================="
+echo "Configure UFW for Docker"
+echo "=========================================="
+echo ""
+
+# Allow Docker containers to reach host services (required for Yopki dev environment)
+UFW_RULES_FILE="/etc/ufw/before.rules"
+DOCKER_RULE="-A ufw-before-input -s 172.16.0.0/12 -j ACCEPT"
+
+if grep -q "172.16.0.0/12" "$UFW_RULES_FILE" 2>/dev/null; then
+    echo "UFW Docker rule already exists, skipping..."
+else
+    echo "Adding UFW rule to allow Docker containers to reach host services..."
+    sudo sed -i '/# allow all on loopback/i # Allow Docker containers to reach host services\n-A ufw-before-input -s 172.16.0.0/12 -j ACCEPT\n' "$UFW_RULES_FILE"
+    echo "Reloading UFW..."
+    sudo ufw reload
+    echo "UFW configured for Docker."
+fi

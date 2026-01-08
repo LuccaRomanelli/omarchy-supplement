@@ -11,3 +11,4 @@ lsof
 ghostty
 jellyfin-mpv-shim
 postman-bin postman
+devpod-bin devpod

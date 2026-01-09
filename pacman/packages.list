@@ -5,3 +5,4 @@
 ripgrep rg
 usbutils lsusb
 usb_modeswitch
+mpv-shim-default-shaders

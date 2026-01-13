@@ -24,6 +24,7 @@ cd ~
 if [ $? -eq 0 ]; then
   echo "removing old configs"
   rm -rf ~/.config/ghostty ~/.config/waybar ~/.config/starship.toml ~/.config/nvim
+  rm -f ~/.XCompose
 
   cd "$REPO_NAME"
   stow zshrc
@@ -34,6 +35,7 @@ if [ $? -eq 0 ]; then
   stow gitconfig
   stow gitconfig-gitlab
   stow nvim
+  stow xcompose
 else
   echo "Failed to clone the repository."
   exit 1

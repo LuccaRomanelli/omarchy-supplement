@@ -6,3 +6,12 @@ ripgrep rg
 usbutils lsusb
 usb_modeswitch
 mpv-shim-default-shaders
+
+# Document conversion and email
+pandoc
+msmtp
+texlive-basic
+texlive-xetex
+texlive-plaingeneric
+texlive-fontsrecommended
+ttf-dejavu

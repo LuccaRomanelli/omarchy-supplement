@@ -27,35 +27,36 @@ fi
 VOXTYPE_CONFIG_DIR="$HOME/.config/voxtype"
 mkdir -p "$VOXTYPE_CONFIG_DIR"
 
-# Configure voxtype for hyprland keybindings and Portuguese
+# Configure voxtype for Hyprland with multilingual support
 VOXTYPE_CONFIG="$VOXTYPE_CONFIG_DIR/config.toml"
-
-# Apply configuration updates
-if [ -f "$VOXTYPE_CONFIG" ]; then
-  echo "Updating voxtype configuration..."
-  # Disable built-in hotkey (using compositor keybindings)
-  if ! grep -q "^enabled = false" "$VOXTYPE_CONFIG"; then
-    sed -i '/^\[hotkey\]/a enabled = false' "$VOXTYPE_CONFIG"
-  fi
-  # Use multilingual model for Portuguese support
-  sed -i 's/^model = "base.en"/model = "small"/' "$VOXTYPE_CONFIG"
-  # Set language to Portuguese
-  sed -i 's/^language = "en"/language = "pt"/' "$VOXTYPE_CONFIG"
-else
-  echo "Creating voxtype configuration..."
-  cat > "$VOXTYPE_CONFIG" << 'EOF'
-# Voxtype configuration for Hyprland + Portuguese
+echo "Creating voxtype configuration..."
+cat > "$VOXTYPE_CONFIG" << 'EOF'
+# Voxtype configuration for Hyprland + Multilingual (PT/EN)
 
 state_file = "auto"
 
 [hotkey]
+# Disabled - using Hyprland keybindings (SUPER+D)
 enabled = false
 
 [whisper]
+# Multilingual model with good speed/quality balance
 model = "small"
-language = "pt"
+# Auto-detect language (works for English and Portuguese)
+language = "auto"
+
+[output]
+mode = "type"
+fallback_to_clipboard = true
+
+[output.notification]
+# Show notification when recording starts
+on_recording_start = true
+# Show notification when transcription begins
+on_recording_stop = true
+# Show notification with transcribed text
+on_transcription = true
 EOF
-fi
 
 # Download multilingual model (small) for Portuguese support
 MODEL_FILE="$HOME/.local/share/voxtype/models/ggml-small.bin"

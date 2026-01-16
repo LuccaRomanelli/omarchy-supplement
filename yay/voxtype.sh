@@ -23,35 +23,45 @@ if ! groups "$USER" | grep -q '\binput\b'; then
   echo "NOTE: You need to log out and back in for the group change to take effect."
 fi
 
-# Download Whisper model (if not already downloaded)
-WHISPER_DIR="$HOME/.local/share/voxtype"
-if [ ! -d "$WHISPER_DIR" ] || [ -z "$(ls -A "$WHISPER_DIR" 2>/dev/null)" ]; then
-  echo "Downloading Whisper model for offline transcription..."
-  voxtype setup --download
-fi
-
 # Create voxtype config directory
 VOXTYPE_CONFIG_DIR="$HOME/.config/voxtype"
 mkdir -p "$VOXTYPE_CONFIG_DIR"
 
-# Configure voxtype for hyprland keybindings (disable built-in hotkey)
+# Configure voxtype for hyprland keybindings and Portuguese
 VOXTYPE_CONFIG="$VOXTYPE_CONFIG_DIR/config.toml"
-if [ -f "$VOXTYPE_CONFIG" ] && ! grep -q "^enabled = false" "$VOXTYPE_CONFIG"; then
-  echo "Disabling built-in hotkey in voxtype configuration..."
-  # Add enabled = false after [hotkey] section
-  sed -i '/^\[hotkey\]/a enabled = false' "$VOXTYPE_CONFIG"
-elif [ ! -f "$VOXTYPE_CONFIG" ]; then
+
+# Apply configuration updates
+if [ -f "$VOXTYPE_CONFIG" ]; then
+  echo "Updating voxtype configuration..."
+  # Disable built-in hotkey (using compositor keybindings)
+  if ! grep -q "^enabled = false" "$VOXTYPE_CONFIG"; then
+    sed -i '/^\[hotkey\]/a enabled = false' "$VOXTYPE_CONFIG"
+  fi
+  # Use multilingual model for Portuguese support
+  sed -i 's/^model = "base.en"/model = "small"/' "$VOXTYPE_CONFIG"
+  # Set language to Portuguese
+  sed -i 's/^language = "en"/language = "pt"/' "$VOXTYPE_CONFIG"
+else
   echo "Creating voxtype configuration..."
   cat > "$VOXTYPE_CONFIG" << 'EOF'
-# Voxtype configuration for Hyprland
+# Voxtype configuration for Hyprland + Portuguese
 
-# Disable built-in hotkey (using compositor keybindings instead)
+state_file = "auto"
+
 [hotkey]
 enabled = false
 
-# Enable state file (required for toggle mode with compositor keybindings)
-state_file = "auto"
+[whisper]
+model = "small"
+language = "pt"
 EOF
+fi
+
+# Download multilingual model (small) for Portuguese support
+MODEL_FILE="$HOME/.local/share/voxtype/models/ggml-small.bin"
+if [ ! -f "$MODEL_FILE" ]; then
+  echo "Downloading multilingual Whisper model (small) for Portuguese..."
+  voxtype setup --download
 fi
 
 # Setup compositor compatibility

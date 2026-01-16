@@ -44,7 +44,9 @@
       "Bash(journalctl:*)",
       "Bash(voxtype record start:*)",
       "Bash(voxtype record stop:*)",
-      "Bash(pactl list sources short:*)"
+      "Bash(pactl list sources short:*)",
+      "Bash(pactl get-default-source:*)",
+      "Bash(pactl list:*)"
     ],
     "deny": []
   }

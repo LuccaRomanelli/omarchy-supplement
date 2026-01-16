@@ -15,3 +15,7 @@ texlive-xetex
 texlive-plaingeneric
 texlive-fontsrecommended
 ttf-dejavu
+
+# Voxtype dependencies (speech-to-text)
+wtype
+wl-clipboard

@@ -37,7 +37,14 @@
       "Bash(yay -Q:*)",
       "WebFetch(domain:voxtype.io)",
       "Bash(groups:*)",
-      "Bash(./start.sh:*)"
+      "Bash(./start.sh:*)",
+      "Bash(./yay/voxtype.sh:*)",
+      "Bash(~/.config/hypr/hyprland.conf)",
+      "Bash(hyprctl reload:*)",
+      "Bash(journalctl:*)",
+      "Bash(voxtype record start:*)",
+      "Bash(voxtype record stop:*)",
+      "Bash(pactl list sources short:*)"
     ],
     "deny": []
   }

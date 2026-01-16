@@ -46,7 +46,11 @@
       "Bash(voxtype record stop:*)",
       "Bash(pactl list sources short:*)",
       "Bash(pactl get-default-source:*)",
-      "Bash(pactl list:*)"
+      "Bash(pactl list:*)",
+      "Bash(voxtype setup:*)",
+      "Bash(pacman:*)",
+      "Bash(yay -Qi:*)",
+      "Bash(voxtype --help:*)"
     ],
     "deny": []
   }

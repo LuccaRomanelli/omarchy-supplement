@@ -23,7 +23,7 @@ cd ~
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
   echo "removing old configs"
-  rm -rf ~/.config/ghostty ~/.config/waybar ~/.config/starship.toml ~/.config/nvim
+  rm -rf ~/.config/ghostty ~/.config/waybar ~/.config/starship.toml ~/.config/nvim ~/.config/voxtype
   rm -f ~/.XCompose
 
   cd "$REPO_NAME"
@@ -33,9 +33,9 @@ if [ $? -eq 0 ]; then
   stow waybar
   stow starship
   stow gitconfig
-  stow gitconfig-gitlab
   stow nvim
   stow xcompose
+  stow voxtype
 else
   echo "Failed to clone the repository."
   exit 1

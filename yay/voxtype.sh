@@ -23,40 +23,11 @@ if ! groups "$USER" | grep -q '\binput\b'; then
   echo "NOTE: You need to log out and back in for the group change to take effect."
 fi
 
-# Create voxtype config directory
-VOXTYPE_CONFIG_DIR="$HOME/.config/voxtype"
-mkdir -p "$VOXTYPE_CONFIG_DIR"
-
-# Configure voxtype for Hyprland with multilingual support
-VOXTYPE_CONFIG="$VOXTYPE_CONFIG_DIR/config.toml"
-echo "Creating voxtype configuration..."
-cat > "$VOXTYPE_CONFIG" << 'EOF'
-# Voxtype configuration for Hyprland + Multilingual (PT/EN)
-
-state_file = "auto"
-
-[hotkey]
-# Disabled - using Hyprland keybindings (SUPER+D)
-enabled = false
-
-[whisper]
-# Multilingual model with good speed/quality balance
-model = "small"
-# Auto-detect language (works for English and Portuguese)
-language = "auto"
-
-[output]
-mode = "type"
-fallback_to_clipboard = true
-
-[output.notification]
-# Show notification when recording starts
-on_recording_start = true
-# Show notification when transcription begins
-on_recording_stop = true
-# Show notification with transcribed text
-on_transcription = true
-EOF
+# Config is managed by dotfiles (stow) - check if it exists
+VOXTYPE_CONFIG="$HOME/.config/voxtype/config.toml"
+if [ ! -f "$VOXTYPE_CONFIG" ]; then
+  echo "Warning: Voxtype config not found. Run install/dotfiles.sh first."
+fi
 
 # Download multilingual model (small) for Portuguese support
 MODEL_FILE="$HOME/.local/share/voxtype/models/ggml-small.bin"

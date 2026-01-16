@@ -50,7 +50,11 @@
       "Bash(voxtype setup:*)",
       "Bash(pacman:*)",
       "Bash(yay -Qi:*)",
-      "Bash(voxtype --help:*)"
+      "Bash(voxtype --help:*)",
+      "Bash(sudo voxtype setup:*)",
+      "Bash(voxtype config:*)",
+      "Bash(pactl get-source-volume:*)",
+      "Bash(pactl get-source-mute:*)"
     ],
     "deny": []
   }

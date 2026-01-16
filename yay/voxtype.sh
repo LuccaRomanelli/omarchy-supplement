@@ -29,11 +29,23 @@ if [ ! -f "$VOXTYPE_CONFIG" ]; then
   echo "Warning: Voxtype config not found. Run install/dotfiles.sh first."
 fi
 
-# Download multilingual model (small) for Portuguese support
-MODEL_FILE="$HOME/.local/share/voxtype/models/ggml-small.bin"
+# Download large-v3-turbo model for GPU acceleration (multilingual PT/EN)
+MODEL_DIR="$HOME/.local/share/voxtype/models"
+MODEL_FILE="$MODEL_DIR/ggml-large-v3-turbo.bin"
+mkdir -p "$MODEL_DIR"
 if [ ! -f "$MODEL_FILE" ]; then
-  echo "Downloading multilingual Whisper model (small) for Portuguese..."
-  voxtype setup --download
+  echo "Downloading large-v3-turbo Whisper model (1.6GB)..."
+  curl -L --progress-bar -o "$MODEL_FILE" \
+    "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin"
+fi
+
+# Enable GPU acceleration if Vulkan backend is available and not already active
+GPU_STATUS=$(voxtype setup gpu 2>&1)
+if echo "$GPU_STATUS" | grep -q "GPU (Vulkan) - active"; then
+  echo "GPU acceleration already enabled."
+elif echo "$GPU_STATUS" | grep -q "GPU (Vulkan) - installed"; then
+  echo "Enabling GPU acceleration..."
+  sudo voxtype setup gpu --enable
 fi
 
 # Setup compositor compatibility

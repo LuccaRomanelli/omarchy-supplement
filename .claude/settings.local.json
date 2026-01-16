@@ -27,7 +27,17 @@
       "Bash(git remote add:*)",
       "WebSearch",
       "Bash(git rebase:*)",
-      "Bash(GIT_EDITOR=true git rebase:*)"
+      "Bash(GIT_EDITOR=true git rebase:*)",
+      "Bash(command -v:*)",
+      "Bash(voxtype --version:*)",
+      "Bash(pgrep:*)",
+      "Bash(yay -Ss:*)",
+      "Bash(yay -S:*)",
+      "Bash(systemctl:*)",
+      "Bash(yay -Q:*)",
+      "WebFetch(domain:voxtype.io)",
+      "Bash(groups:*)",
+      "Bash(./start.sh:*)"
     ],
     "deny": []
   }

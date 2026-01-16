@@ -18,7 +18,9 @@ omarchy-supplement/
 │   ├── install-packages.sh       # Batch installer
 │   ├── packages.list             # Package registry
 │   ├── zsh.sh                    # Zsh + Oh-My-Zsh + plugins
-│   └── tmux.sh                   # Tmux + TPM
+│   ├── tmux.sh                   # Tmux + TPM
+│   ├── voxtype.sh                # Voxtype speech-to-text
+│   └── iriun-webcam.sh           # Iriun Webcam + v4l2loopback
 │
 ├── pacman/                       # Pacman package management
 │   ├── install-package.sh        # Core single-package installer
@@ -68,27 +70,28 @@ Central utility script used by multiple installers to clone or update git reposi
 ### YAY Package Management (`yay/`)
 
 **Core Installer (`yay/install-package.sh`)**
-- Usage: `./yay/install-package.sh <package_name> [binary_name]`
-- Checks if binary exists using `command -v`
+- Usage: `./yay/install-package.sh <package_name>`
+- Checks if package is installed using `pacman -Qi`
 - Installs package via yay with `--noconfirm --needed` flags if not present
-- If binary_name differs from package_name, specify it as second parameter
-- Example: `./yay/install-package.sh zen-browser-bin zen-browser`
+- Example: `./yay/install-package.sh zen-browser-bin`
 
 **Batch Installer (`yay/install-packages.sh`)**
 - Installs all packages listed in `yay/packages.list`
-- Reads one package per line with optional binary name
+- Reads one package per line
 - Skips empty lines and comments (lines starting with #)
 
 **Complex Installers:**
 - `yay/zsh.sh` - Installs zsh + Oh-My-Zsh + plugins
 - `yay/tmux.sh` - Installs tmux + TPM (Tmux Plugin Manager)
+- `yay/voxtype.sh` - Installs voxtype speech-to-text with Hyprland integration
+- `yay/iriun-webcam.sh` - Installs Iriun Webcam with v4l2loopback kernel module
 
 ### Pacman Package Management (`pacman/`)
 
 **Core Installer (`pacman/install-package.sh`)**
-- Usage: `./pacman/install-package.sh <package_name> [binary_name]`
+- Usage: `./pacman/install-package.sh <package_name>`
 - Same functionality as yay installer but uses `sudo pacman`
-- Example: `./pacman/install-package.sh ripgrep rg`
+- Example: `./pacman/install-package.sh ripgrep`
 
 **Batch Installer (`pacman/install-packages.sh`)**
 - Installs all packages listed in `pacman/packages.list`
@@ -96,9 +99,9 @@ Central utility script used by multiple installers to clone or update git reposi
 
 ### Package List Files
 
-- `yay/packages.list` - Central registry of all yay packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty, jellyfin-mpv-shim)
-- `pacman/packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch)
-- Format: `package_name [binary_name]` (one per line)
+- `yay/packages.list` - Central registry of all yay packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty, jellyfin-mpv-shim, postman-bin, devpod-bin)
+- `pacman/packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch, pandoc, msmtp, texlive-*, wtype, wl-clipboard)
+- Format: `package_name` (one per line)
 
 ### Dotfiles Management
 
@@ -182,6 +185,7 @@ Custom keybindings defined in `hyprland-overrides.conf`:
 - `SUPER SHIFT G` - GitHub
 - `SUPER ALT G` - GitLab
 - `SUPER ALT S/O/Y` - Custom shell scripts (start.sh, onhappy.sh, yopki.sh)
+- `SUPER D` - Voxtype speech-to-text (hold to record, release to transcribe)
 - `Page_Down` - Screenshot with editing
 - `SHIFT Page_Down` - Screenshot to clipboard
 - `ALT Page_Down` - Screen recording
@@ -217,8 +221,8 @@ Hyprland multi-monitor setup:
 ./pacman/install-packages.sh    # Install all pacman packages from list
 
 # Or install individual packages
-./yay/install-package.sh <package> [binary]
-./pacman/install-package.sh <package> [binary]
+./yay/install-package.sh <package>
+./pacman/install-package.sh <package>
 ```
 
 ### Theme Management
@@ -252,6 +256,8 @@ Hyprland multi-monitor setup:
 ```bash
 ./yay/zsh.sh                    # Install zsh + Oh-My-Zsh + plugins
 ./yay/tmux.sh                   # Install tmux + TPM (Tmux Plugin Manager)
+./yay/voxtype.sh                # Install voxtype speech-to-text
+./yay/iriun-webcam.sh           # Install Iriun Webcam + v4l2loopback
 ./dev/dev.sh                    # Install node, laravel, pnpm
 ```
 
@@ -268,36 +274,36 @@ The installation scripts assume:
 
 ## Installation Script Execution Order
 
-The `start.sh` script supports **auto-resume after reboot** and executes in two phases:
+The `start.sh` script executes installations in the following order:
 
-### Phase 1: Pre-Reboot (shell setup)
 1. Install zsh (with Oh-My-Zsh + plugins) - `yay/zsh.sh`
-2. Set default shell to zsh - `lib/set-shell.sh`
-3. **REBOOT** - Creates autostart entry and reboots to apply shell change
+2. Batch install YAY packages - `yay/install-packages.sh`
+3. Batch install Pacman packages - `pacman/install-packages.sh`
+4. Obsidian vault - `install/obsidian-vault.sh`
+5. Dotfiles (stowed configurations) - `install/dotfiles.sh`
+6. Development tools - `dev/dev.sh`
+7. Tmux (with TPM post-install) - `yay/tmux.sh`
+8. Shell scripts repository - `install/shell-scripts.sh`
+9. AI tools - `install/ai-tools.sh`
+10. Nhost CLI - `install/nhost.sh`
+11. Omarchy themes - `install/omarchy-themes.sh`
+12. Omarchy webapps - `install/omarchy-webapps.sh`
+13. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
+14. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
+15. Hyprland overrides - `install/hyprland-overrides.sh`
+16. Yopki project repos - `dev/yopki.sh`
+17. USB Mode Switch - `install/usb-modeswitch.sh`
+18. Iriun Webcam - `yay/iriun-webcam.sh`
+19. Voxtype speech-to-text - `yay/voxtype.sh`
+20. Set default shell to zsh - `lib/set-shell.sh`
 
-### Phase 2: Post-Reboot (main installation)
-4. Batch install YAY packages - `yay/install-packages.sh`
-5. Batch install Pacman packages - `pacman/install-packages.sh`
-6. Obsidian vault - `install/obsidian-vault.sh`
-7. Dotfiles (stowed configurations) - `install/dotfiles.sh`
-8. Development tools - `dev/dev.sh`
-9. Tmux (with TPM post-install) - `yay/tmux.sh`
-10. Shell scripts repository - `install/shell-scripts.sh`
-11. AI tools - `install/ai-tools.sh`
-12. Nhost CLI - `install/nhost.sh`
-13. Omarchy themes - `install/omarchy-themes.sh`
-14. Omarchy webapps - `install/omarchy-webapps.sh`
-15. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
-16. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
-17. Hyprland overrides - `install/hyprland-overrides.sh`
-18. Yopki project repos - `dev/yopki.sh`
-19. USB Mode Switch - `install/usb-modeswitch.sh`
+**Note:** After running `start.sh`, logout and login (or reboot) is required for shell change and voxtype input group to take effect.
 
-### Auto-Resume System
+## Script Compatibility
 
-The installation uses a state file (`~/.local/state/omarchy-supplement/install-progress`) to track progress:
-- Saves current step after each successful installation
-- Creates autostart entry (`~/.config/autostart/omarchy-supplement-resume.desktop`) before reboot
-- Automatically continues from saved step after login
-- Cleans up state and autostart files when complete
-- Skips reboot if zsh is already the default shell
+All scripts use the zsh-compatible SCRIPT_DIR pattern:
+```bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+```
+
+This ensures scripts work correctly when called from `start.sh` via zsh.

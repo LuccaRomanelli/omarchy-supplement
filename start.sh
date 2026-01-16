@@ -2,7 +2,7 @@
 
 # Omarchy Supplement Installation Script - Continuous Installation
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 
 echo "=== Omarchy Supplement Installation ==="
 echo ""
@@ -33,89 +33,88 @@ STEPS=(
     "yay/voxtype.sh"
 )
 
-# Step 1: Install Zsh + Oh-My-Zsh + plugins (runs in bash)
-echo "[1/19] Installing Zsh + Oh-My-Zsh + plugins..."
+echo "Installing Zsh + Oh-My-Zsh + plugins..."
 bash "$SCRIPT_DIR/yay/zsh.sh"
 echo ""
 
-# Check if zsh was installed successfully
 if ! command -v zsh &>/dev/null; then
     echo "Error: Zsh installation failed. Exiting."
     exit 1
 fi
 
-# Steps 2-17: Run remaining installations in zsh
-echo "[2/19] Installing YAY packages..."
+echo "Installing YAY packages..."
 zsh "$SCRIPT_DIR/yay/install-packages.sh"
 echo ""
 
-echo "[3/19] Installing Pacman packages..."
+echo "Installing Pacman packages..."
 zsh "$SCRIPT_DIR/pacman/install-packages.sh"
 echo ""
 
-echo "[4/19] Setting up Obsidian vault..."
+echo "Setting up Obsidian vault..."
 zsh "$SCRIPT_DIR/install/obsidian-vault.sh"
 echo ""
 
-echo "[5/19] Installing dotfiles..."
+echo "Installing dotfiles..."
 zsh "$SCRIPT_DIR/install/dotfiles.sh"
 echo ""
 
-echo "[6/19] Installing development tools..."
+echo "Installing development tools..."
 zsh "$SCRIPT_DIR/dev/dev.sh"
 echo ""
 
-echo "[7/19] Installing Tmux + TPM..."
+echo "Installing Tmux + TPM..."
 zsh "$SCRIPT_DIR/yay/tmux.sh"
 echo ""
 
-echo "[8/19] Installing shell scripts..."
+echo "Installing shell scripts..."
 zsh "$SCRIPT_DIR/install/shell-scripts.sh"
 echo ""
 
-echo "[9/19] Installing AI tools..."
+echo "Installing AI tools..."
 zsh "$SCRIPT_DIR/install/ai-tools.sh"
 echo ""
 
-echo "[10/19] Installing Nhost CLI..."
+echo "Installing Nhost CLI..."
 zsh "$SCRIPT_DIR/install/nhost.sh"
 echo ""
 
-echo "[11/19] Installing Omarchy themes..."
+echo "Installing Omarchy themes..."
 zsh "$SCRIPT_DIR/install/omarchy-themes.sh"
 echo ""
 
-echo "[12/19] Installing Omarchy webapps..."
+echo "Installing Omarchy webapps..."
 zsh "$SCRIPT_DIR/install/omarchy-webapps.sh"
 echo ""
 
-echo "[13/19] Uninstalling Omarchy apps..."
+echo "Uninstalling Omarchy apps..."
 zsh "$SCRIPT_DIR/uninstall/omarchy-apps.sh"
 echo ""
 
-echo "[14/19] Uninstalling Omarchy webapps..."
+echo "Uninstalling Omarchy webapps..."
 zsh "$SCRIPT_DIR/uninstall/omarchy-webapps.sh"
 echo ""
 
-echo "[15/19] Installing Hyprland overrides..."
+echo "Installing Hyprland overrides..."
 zsh "$SCRIPT_DIR/install/hyprland-overrides.sh"
 echo ""
 
-echo "[16/19] Setting up Yopki projects..."
+echo "Setting up Yopki projects..."
 zsh "$SCRIPT_DIR/dev/yopki.sh"
 echo ""
 
-echo "[17/19] Configuring USB mode switch..."
+echo "Configuring USB mode switch..."
 zsh "$SCRIPT_DIR/install/usb-modeswitch.sh"
 echo ""
 
-# Step 18: Install Voxtype (speech-to-text)
-echo "[18/19] Installing Voxtype..."
+echo "Installing Iriun Webcam..."
+zsh "$SCRIPT_DIR/yay/iriun-webcam.sh"
+echo ""
+
+echo "Installing Voxtype..."
 zsh "$SCRIPT_DIR/yay/voxtype.sh"
 echo ""
 
-# Step 19: Set zsh as default shell
-echo "[19/19] Setting Zsh as default shell..."
+echo "Setting Zsh as default shell..."
 bash "$SCRIPT_DIR/lib/set-shell.sh"
 echo ""
 

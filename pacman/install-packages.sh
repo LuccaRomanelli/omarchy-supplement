@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Batch installer for Pacman packages
-# Reads from pacman-packages.list and installs all listed packages
+# Reads from packages.list and installs all listed packages
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 LIST_FILE="$SCRIPT_DIR/packages.list"
 
 if [ ! -f "$LIST_FILE" ]; then
@@ -18,8 +18,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     # Skip empty lines and comments
     [[ -z "$line" || "$line" =~ ^# ]] && continue
 
-    # Call centralized installer with the line (package name and optional binary name)
-    $SCRIPT_DIR/install-package.sh $line
+    "$SCRIPT_DIR/install-package.sh" "$line"
 done < "$LIST_FILE"
 
 echo

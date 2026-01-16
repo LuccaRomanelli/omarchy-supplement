@@ -3,7 +3,7 @@
 # USB Mode Switch - Detects and switches USB adapters from storage mode to modem mode
 # Runs automatically without prompts for use in start.sh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "=== USB Mode Switch ==="

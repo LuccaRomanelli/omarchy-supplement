@@ -1,12 +1,16 @@
 #!/bin/bash
 
-pkg_names="alacritty
-signal-desktop
-xournalapp
-spotify"
+pkg_names=(
+    "alacritty"
+    "signal-desktop"
+    "xournalpp"
+    "spotify"
+)
 
-if [[ -n "$pkg_names" ]]; then
-  # Convert newline-separated selections to space-separated for yay
-  echo "$pkg_names" | tr '\n' ' ' | xargs sudo pacman -Rns --noconfirm
-  omarchy-show-done
-fi
+for pkg in "${pkg_names[@]}"; do
+    if pacman -Qi "$pkg" &>/dev/null; then
+        sudo pacman -Rns "$pkg" --noconfirm
+    else
+        echo "Package $pkg not installed, skipping..."
+    fi
+done

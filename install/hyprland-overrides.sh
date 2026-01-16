@@ -3,7 +3,7 @@
 set -e
 
 HYPRLAND_CONFIG="$HOME/.config/hypr/hyprland.conf"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 OVERRIDES_CONFIG="$ROOT_DIR/hyprland-overrides.conf"
 SOURCE_LINE="source = $OVERRIDES_CONFIG"

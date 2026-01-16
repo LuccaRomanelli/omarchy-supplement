@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Path to git_sync_repo.sh script
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 SYNC_SCRIPT="$ROOT_DIR/lib/git_sync_repo.sh"
 
@@ -65,7 +65,7 @@ echo "=========================================="
 echo "Copy Yopki Web .env"
 echo "=========================================="
 echo ""
-cd $BASE_DIR/trip-planner-web
+cd "$BASE_DIR/trip-planner-web"
 npm install
 if [ ! -f apps/web-desktop/.env.local ]; then
     cp apps/web-desktop/.env.local.example apps/web-desktop/.env.local
@@ -80,7 +80,7 @@ echo "=========================================="
 echo "Copy Yopki BFF .env"
 echo "=========================================="
 echo ""
-cd $BASE_DIR/trip-planner-bff
+cd "$BASE_DIR/trip-planner-bff"
 if [ ! -f .secrets ]; then
     cp secrets.example .secrets
 fi
@@ -90,7 +90,7 @@ echo "=========================================="
 echo "Copy Yopki Backend .env"
 echo "=========================================="
 echo ""
-cd $BASE_DIR/trip-planner-backend
+cd "$BASE_DIR/trip-planner-backend"
 
 if [ ! -f .env ]; then
     cp .env.example .env

@@ -2,7 +2,7 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 
 # Install iriunwebcam-bin (AUR)
 "$SCRIPT_DIR/install-package.sh" iriunwebcam-bin iriunwebcam

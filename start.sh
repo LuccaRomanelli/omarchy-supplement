@@ -21,6 +21,7 @@ STEPS=(
     "yay/tmux.sh"
     "install/shell-scripts.sh"
     "install/ai-tools.sh"
+    "yay/auto-claude.sh"
     "install/nhost.sh"
     "install/omarchy-themes.sh"
     "install/omarchy-webapps.sh"
@@ -72,6 +73,10 @@ echo ""
 
 echo "Installing AI tools..."
 zsh "$SCRIPT_DIR/install/ai-tools.sh"
+echo ""
+
+echo "Installing Auto-Claude..."
+zsh "$SCRIPT_DIR/yay/auto-claude.sh"
 echo ""
 
 echo "Installing Nhost CLI..."

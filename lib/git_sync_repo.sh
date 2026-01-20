@@ -32,12 +32,7 @@ echo "Base Dir : $BASE_DIR"
 cd "$BASE_DIR"
 
 if [ -d "$REPO_NAME/.git" ]; then
-  echo "Repository '$REPO_NAME' already exists. Pulling branch '$BRANCH'..."
-  cd "$REPO_NAME"
-  git fetch origin
-  git checkout "$BRANCH" || git checkout -b "$BRANCH" origin/"$BRANCH"
-  git pull origin "$BRANCH"
-  echo "Pull completed."
+  echo "Repository '$REPO_NAME' already exists. Skipping."
 else
   echo "Repository '$REPO_NAME' does not exist. Cloning..."
   git clone --branch "$BRANCH" "$REPO_URL" "$REPO_NAME"

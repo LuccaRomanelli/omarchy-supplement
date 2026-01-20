@@ -26,13 +26,26 @@ echo ""
 lsusb
 echo ""
 
-# Known vendors that use storage mode (can expand)
+# Known vendors that commonly have devices requiring mode switching
 declare -A KNOWN_VENDORS=(
     ["0e8d"]="MediaTek"
     ["12d1"]="Huawei"
     ["19d2"]="ZTE"
     ["1bbb"]="T&A Mobile Phones"
 )
+
+# Check if a device is in USB Mass Storage class (class 0x08)
+# This indicates the device is in "storage mode" and may need switching
+is_mass_storage_device() {
+    local vendor="$1"
+    local product="$2"
+
+    # Get detailed device info and check for Mass Storage class (bInterfaceClass 8)
+    if lsusb -d "$vendor:$product" -v 2>/dev/null | grep -q "bInterfaceClass.*8 Mass Storage"; then
+        return 0  # Is mass storage
+    fi
+    return 1  # Not mass storage
+}
 
 echo "Searching for devices in storage mode..."
 echo ""
@@ -47,22 +60,31 @@ while IFS= read -r line; do
         # Check if it's a known vendor
         if [[ -n "${KNOWN_VENDORS[$vendor]}" ]]; then
             device_name=$(echo "$line" | cut -d' ' -f7-)
-            echo "Found: ${KNOWN_VENDORS[$vendor]} (ID $vendor:$product)"
-            echo "  Description: $device_name"
-            echo "  Executing usb_modeswitch..."
 
-            sudo usb_modeswitch -v "$vendor" -p "$product"
+            # Check if the device is actually in mass storage mode
+            if is_mass_storage_device "$vendor" "$product"; then
+                echo "Found: ${KNOWN_VENDORS[$vendor]} (ID $vendor:$product)"
+                echo "  Description: $device_name"
+                echo "  Device is in storage mode, executing usb_modeswitch..."
 
-            # Wait for device to reconnect
-            sleep 2
+                sudo usb_modeswitch -v "$vendor" -p "$product"
 
-            echo "  Mode switch executed"
-            echo ""
-            echo "  Checking new network interfaces..."
-            ip link show | grep -E "^[0-9]+:" | grep -v "lo:"
-            echo ""
+                # Wait for device to reconnect
+                sleep 2
 
-            found=1
+                echo "  Mode switch executed"
+                echo ""
+                echo "  Checking new network interfaces..."
+                ip link show | grep -E "^[0-9]+:" | grep -v "lo:"
+                echo ""
+
+                found=1
+            else
+                echo "Skipping: ${KNOWN_VENDORS[$vendor]} (ID $vendor:$product)"
+                echo "  Description: $device_name"
+                echo "  Reason: Not in storage mode (already in correct mode)"
+                echo ""
+            fi
         fi
     fi
 done < <(lsusb)

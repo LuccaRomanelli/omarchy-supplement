@@ -54,7 +54,11 @@
       "Bash(sudo voxtype setup:*)",
       "Bash(voxtype config:*)",
       "Bash(pactl get-source-volume:*)",
-      "Bash(pactl get-source-mute:*)"
+      "Bash(pactl get-source-mute:*)",
+      "Bash(arecord:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(yay -Qs:*)",
+      "WebFetch(domain:aur.archlinux.org)"
     ],
     "deny": []
   }

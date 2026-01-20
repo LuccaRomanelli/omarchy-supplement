@@ -20,7 +20,8 @@ omarchy-supplement/
 │   ├── zsh.sh                    # Zsh + Oh-My-Zsh + plugins
 │   ├── tmux.sh                   # Tmux + TPM
 │   ├── voxtype.sh                # Voxtype speech-to-text
-│   └── iriun-webcam.sh           # Iriun Webcam + v4l2loopback
+│   ├── iriun-webcam.sh           # Iriun Webcam + v4l2loopback
+│   └── auto-claude.sh            # Auto-Claude multi-agent framework
 │
 ├── pacman/                       # Pacman package management
 │   ├── install-package.sh        # Core single-package installer
@@ -85,6 +86,7 @@ Central utility script used by multiple installers to clone or update git reposi
 - `yay/tmux.sh` - Installs tmux + TPM (Tmux Plugin Manager)
 - `yay/voxtype.sh` - Installs voxtype speech-to-text with Hyprland integration
 - `yay/iriun-webcam.sh` - Installs Iriun Webcam with v4l2loopback kernel module
+- `yay/auto-claude.sh` - Installs Auto-Claude multi-agent AI framework
 
 ### Pacman Package Management (`pacman/`)
 
@@ -258,6 +260,7 @@ Hyprland multi-monitor setup:
 ./yay/tmux.sh                   # Install tmux + TPM (Tmux Plugin Manager)
 ./yay/voxtype.sh                # Install voxtype speech-to-text
 ./yay/iriun-webcam.sh           # Install Iriun Webcam + v4l2loopback
+./yay/auto-claude.sh            # Install Auto-Claude multi-agent framework
 ./dev/dev.sh                    # Install node, laravel, pnpm
 ```
 
@@ -285,17 +288,18 @@ The `start.sh` script executes installations in the following order:
 7. Tmux (with TPM post-install) - `yay/tmux.sh`
 8. Shell scripts repository - `install/shell-scripts.sh`
 9. AI tools - `install/ai-tools.sh`
-10. Nhost CLI - `install/nhost.sh`
-11. Omarchy themes - `install/omarchy-themes.sh`
-12. Omarchy webapps - `install/omarchy-webapps.sh`
-13. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
-14. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
-15. Hyprland overrides - `install/hyprland-overrides.sh`
-16. Yopki project repos - `dev/yopki.sh`
-17. USB Mode Switch - `install/usb-modeswitch.sh`
-18. Iriun Webcam - `yay/iriun-webcam.sh`
-19. Voxtype speech-to-text - `yay/voxtype.sh`
-20. Set default shell to zsh - `lib/set-shell.sh`
+10. Auto-Claude multi-agent framework - `yay/auto-claude.sh`
+11. Nhost CLI - `install/nhost.sh`
+12. Omarchy themes - `install/omarchy-themes.sh`
+13. Omarchy webapps - `install/omarchy-webapps.sh`
+14. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
+15. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
+16. Hyprland overrides - `install/hyprland-overrides.sh`
+17. Yopki project repos - `dev/yopki.sh`
+18. USB Mode Switch - `install/usb-modeswitch.sh`
+19. Iriun Webcam - `yay/iriun-webcam.sh`
+20. Voxtype speech-to-text - `yay/voxtype.sh`
+21. Set default shell to zsh - `lib/set-shell.sh`
 
 **Note:** After running `start.sh`, logout and login (or reboot) is required for shell change and voxtype input group to take effect.
 

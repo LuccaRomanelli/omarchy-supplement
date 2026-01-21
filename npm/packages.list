@@ -1,5 +1,5 @@
 # Global npm packages
-# Format: package_name (one per line)
+# Format: <package_name> <check_command>
 
-@anthropic-ai/claude-code
-@devcontainers/cli
+@anthropic-ai/claude-code claude
+@devcontainers/cli devcontainer

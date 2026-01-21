@@ -29,6 +29,7 @@ STEPS=(
     "install/usb-modeswitch.sh"
     "yay/iriun-webcam.sh"
     "yay/voxtype.sh"
+    "yay/auto-claude.sh"
 )
 
 echo "Installing Zsh + Oh-My-Zsh + plugins..."
@@ -102,6 +103,10 @@ echo ""
 
 echo "Installing Voxtype..."
 zsh "$SCRIPT_DIR/yay/voxtype.sh"
+echo ""
+
+echo "Installing Auto-Claude..."
+zsh "$SCRIPT_DIR/yay/auto-claude.sh"
 echo ""
 
 echo "Setting Zsh as default shell..."

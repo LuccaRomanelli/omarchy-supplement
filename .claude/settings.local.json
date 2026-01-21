@@ -60,7 +60,18 @@
       "Bash(yay -Qs:*)",
       "WebFetch(domain:aur.archlinux.org)",
       "WebFetch(domain:api.github.com)",
-      "Bash(~/.local/bin/auto-claude.AppImage:*)"
+      "Bash(~/.local/bin/auto-claude.AppImage:*)",
+      "Bash(npm config:*)",
+      "Bash(claude --version:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(mise config:*)",
+      "Bash(mise doctor:*)",
+      "Bash(mise where:*)",
+      "Bash(mise trust:*)",
+      "Bash(curl:*)",
+      "Bash(mise settings:*)",
+      "Bash(mise --help:*)",
+      "Bash(mise ignore:*)"
     ],
     "deny": []
   }

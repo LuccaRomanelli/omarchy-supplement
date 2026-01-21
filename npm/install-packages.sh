@@ -18,7 +18,10 @@ while IFS= read -r line || [ -n "$line" ]; do
     # Skip empty lines and comments
     [[ -z "$line" || "$line" =~ ^# ]] && continue
 
-    "$SCRIPT_DIR/install-package.sh" "$line"
+    # Extract package name (first field)
+    PACKAGE_NAME=$(echo "$line" | awk '{print $1}')
+
+    "$SCRIPT_DIR/install-package.sh" "$PACKAGE_NAME"
 done < "$LIST_FILE"
 
 echo

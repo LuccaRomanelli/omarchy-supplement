@@ -5,6 +5,7 @@ ripgrep
 usbutils
 usb_modeswitch
 mpv-shim-default-shaders
+jq
 
 # Document conversion and email
 pandoc

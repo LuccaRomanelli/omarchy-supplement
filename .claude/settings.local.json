@@ -58,7 +58,9 @@
       "Bash(arecord:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(yay -Qs:*)",
-      "WebFetch(domain:aur.archlinux.org)"
+      "WebFetch(domain:aur.archlinux.org)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(~/.local/bin/auto-claude.AppImage:*)"
     ],
     "deny": []
   }

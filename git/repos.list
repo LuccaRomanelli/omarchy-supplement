@@ -1,0 +1,6 @@
+# Git repositories to clone
+# Format: repo_url [repo_name] [branch] [post_clone_script]
+
+git@github.com:LuccaRomanelli/obisidian.git obisidian main
+git@github.com:LuccaRomanelli/dotfiles.git dotfiles main setup.sh
+https://github.com/LuccaRomanelli/shell.git shell main

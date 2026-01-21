@@ -20,27 +20,36 @@ omarchy-supplement/
 │   ├── zsh.sh                    # Zsh + Oh-My-Zsh + plugins
 │   ├── tmux.sh                   # Tmux + TPM
 │   ├── voxtype.sh                # Voxtype speech-to-text
-│   ├── iriun-webcam.sh           # Iriun Webcam + v4l2loopback
-│   └── auto-claude.sh            # Auto-Claude multi-agent framework
+│   └── iriun-webcam.sh           # Iriun Webcam + v4l2loopback
 │
 ├── pacman/                       # Pacman package management
 │   ├── install-package.sh        # Core single-package installer
 │   ├── install-packages.sh       # Batch installer
 │   └── packages.list             # Package registry
 │
+├── npm/                          # NPM global package management
+│   ├── install-package.sh        # Core single-package installer
+│   ├── install-packages.sh       # Batch installer
+│   └── packages.list             # Package registry
+│
+├── curl/                         # Curl-based installations
+│   ├── install-package.sh        # Core single-package installer
+│   ├── install-packages.sh       # Batch installer
+│   └── packages.list             # Package registry (with check commands)
+│
+├── git/                          # Git repository cloning
+│   ├── clone-repo.sh             # Core single-repo cloner
+│   ├── clone-repos.sh            # Batch cloner
+│   └── repos.list                # Repository registry
+│
 ├── install/                      # Installation scripts
-│   ├── dotfiles.sh               # Stow-based dotfiles
-│   ├── shell-scripts.sh          # Shell scripts repo
-│   ├── ai-tools.sh               # AI CLI tools
-│   ├── nhost.sh                  # Nhost CLI
 │   ├── omarchy-themes.sh         # Omarchy themes
 │   ├── omarchy-webapps.sh        # Webapp shortcuts
 │   ├── hyprland-overrides.sh     # Hyprland config setup
-│   ├── obsidian-vault.sh         # Obsidian vault
 │   └── usb-modeswitch.sh         # USB modem switching
 │
 ├── dev/                          # Development-related scripts
-│   ├── dev.sh                    # Node/mise + Laravel + pnpm
+│   ├── dev.sh                    # Node.js via mise + pnpm
 │   └── yopki.sh                  # Yopki project repos
 │
 ├── uninstall/                    # Uninstall scripts
@@ -66,7 +75,7 @@ Central utility script used by multiple installers to clone or update git reposi
 - Usage: `./lib/git_sync_repo.sh <REPO_URL> [REPO_NAME] [BRANCH]`
 - Automatically clones if repository doesn't exist, otherwise pulls latest changes
 - Default branch is `main` if not specified
-- Used by `install/dotfiles.sh`, `install/shell-scripts.sh`, and `dev/yopki.sh`
+- Used by `git/clone-repo.sh` and `dev/yopki.sh`
 
 ### YAY Package Management (`yay/`)
 
@@ -86,7 +95,6 @@ Central utility script used by multiple installers to clone or update git reposi
 - `yay/tmux.sh` - Installs tmux + TPM (Tmux Plugin Manager)
 - `yay/voxtype.sh` - Installs voxtype speech-to-text with Hyprland integration
 - `yay/iriun-webcam.sh` - Installs Iriun Webcam with v4l2loopback kernel module
-- `yay/auto-claude.sh` - Installs Auto-Claude multi-agent AI framework
 
 ### Pacman Package Management (`pacman/`)
 
@@ -99,32 +107,71 @@ Central utility script used by multiple installers to clone or update git reposi
 - Installs all packages listed in `pacman/packages.list`
 - Same format as yay batch installer
 
-### Package List Files
+### NPM Global Package Management (`npm/`)
 
-- `yay/packages.list` - Central registry of all yay packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty, jellyfin-mpv-shim, postman-bin, devpod-bin)
-- `pacman/packages.list` - Central registry of all pacman packages (ripgrep, usbutils, usb_modeswitch, pandoc, msmtp, texlive-*, wtype, wl-clipboard)
-- Format: `package_name` (one per line)
+**Core Installer (`npm/install-package.sh`)**
+- Usage: `./npm/install-package.sh <package_name>`
+- Checks if package is globally installed using `npm list -g`
+- Installs package globally via `npm install -g` if not present
+- Example: `./npm/install-package.sh @anthropic-ai/claude-code`
+
+**Batch Installer (`npm/install-packages.sh`)**
+- Installs all packages listed in `npm/packages.list`
+- One package per line, skips empty lines and comments
+
+### Curl-based Package Installations (`curl/`)
+
+**Core Installer (`curl/install-package.sh`)**
+- Usage: `./curl/install-package.sh <package_name>`
+- Reads package info from `packages.list` (format: `<name> <check_command> <install_url>`)
+- Checks if package is installed using the check command
+- Downloads and executes installer script via `curl -fsSL <url> | bash`
+- Example: `./curl/install-package.sh nhost`
+
+**Batch Installer (`curl/install-packages.sh`)**
+- Installs all packages listed in `curl/packages.list`
+- Extracts package name from each entry and calls core installer
+
+### Git Repository Cloning (`git/`)
+
+**Core Cloner (`git/clone-repo.sh`)**
+- Usage: `./git/clone-repo.sh <repo_url> [repo_name] [branch] [post_clone_script]`
+- Wraps `lib/git_sync_repo.sh` for cloning/updating repositories
+- Supports optional post-clone script execution (runs script from repo after clone)
+- Example: `./git/clone-repo.sh git@github.com:user/dotfiles.git dotfiles main setup.sh`
+
+**Batch Cloner (`git/clone-repos.sh`)**
+- Clones all repositories listed in `git/repos.list`
+- Format: `repo_url [repo_name] [branch] [post_clone_script]`
+
+### Package and Repository List Files
+
+- `yay/packages.list` - YAY packages (stow, yazi, zen-browser-bin, pnpm, lsof, ghostty, jellyfin-mpv-shim)
+- `pacman/packages.list` - Pacman packages (ripgrep, usbutils, usb_modeswitch, pandoc, msmtp, texlive-*, wtype, wl-clipboard)
+- `npm/packages.list` - NPM global packages (@anthropic-ai/claude-code, @devcontainers/cli)
+- `curl/packages.list` - Curl-based packages with check commands (nhost)
+- `git/repos.list` - Git repositories to clone (obisidian, dotfiles with setup.sh, shell)
 
 ### Dotfiles Management
 
 Uses GNU Stow for symlink management:
 - Dotfiles are stored in a separate repository: `git@github.com:LuccaRomanelli/dotfiles.git`
-- `install/dotfiles.sh` clones/updates the dotfiles repo and stows configurations for:
-  - zshrc
-  - ghostty (terminal emulator)
-  - tmux
-  - waybar
-  - starship (shell prompt)
-  - gitconfig
-  - gitconfig-gitlab
-- Before stowing, removes old configs from `~/.config/ghostty`, `~/.config/waybar`, and `~/.config/starship.toml`
+- Cloned via `git/clone-repos.sh` with `setup.sh` post-clone script
+- The post-clone script (`setup.sh` in the dotfiles repo) handles stowing configurations
+- Stowed configurations include: zshrc, ghostty, tmux, waybar, starship, gitconfig, gitconfig-gitlab
 
 ### Shell Scripts Repository
 
 Custom shell scripts are maintained in a separate repository:
 - Repository: `https://github.com/LuccaRomanelli/shell.git`
-- Cloned to `~/shell` via `install/shell-scripts.sh`
+- Cloned to `~/shell` via `git/clone-repos.sh`
 - Referenced by Hyprland keybindings for custom workflows
+
+### Obsidian Vault
+
+Obsidian notes vault:
+- Repository: `git@github.com:LuccaRomanelli/obisidian.git`
+- Cloned to `~/obisidian` via `git/clone-repos.sh`
 
 ### Hyprland Configuration Override System
 
@@ -157,25 +204,11 @@ Utility script for USB modem detection and mode switching:
 
 ## Key Configuration Details
 
-### AI Tools Installation (`install/ai-tools.sh`)
-
-Installs CLI tools for AI services via npm:
-- `@anthropic-ai/claude-code` (Claude CLI)
-- `@google/gemini-cli` (Gemini CLI)
-- `@abacus-ai/cli` (AbacusAI CLI)
-
-### Nhost CLI Installation (`install/nhost.sh`)
-
-Installs the Nhost CLI for backend-as-a-service development:
-- Uses official installer script from nhost repository
-- Provides local development environment for Nhost projects
-
 ### Development Tools (`dev/dev.sh`)
 
 Installs development environment:
-- Node.js versions via mise (latest + LTS 24)
-- Laravel via omarchy-install-dev-env
-- pnpm package manager
+- Node.js LTS 24 via mise (sets as global default)
+- pnpm package manager via yay
 
 ### Hyprland Keybindings
 
@@ -211,20 +244,24 @@ Hyprland multi-monitor setup:
 
 ### Install Specific Components
 ```bash
-./install/dotfiles.sh           # Update dotfiles configurations
 ./install/hyprland-overrides.sh # Apply Hyprland customizations
-./install/shell-scripts.sh      # Update custom shell scripts
-./install/ai-tools.sh           # Install/update AI CLI tools
+./git/clone-repos.sh            # Clone/update all git repositories
 ```
 
 ### Batch Package Installation
 ```bash
 ./yay/install-packages.sh       # Install all yay packages from list
 ./pacman/install-packages.sh    # Install all pacman packages from list
+./npm/install-packages.sh       # Install all npm global packages from list
+./curl/install-packages.sh      # Install all curl-based packages from list
+./git/clone-repos.sh            # Clone all git repositories from list
 
-# Or install individual packages
+# Or install individual packages/repos
 ./yay/install-package.sh <package>
 ./pacman/install-package.sh <package>
+./npm/install-package.sh <package>
+./curl/install-package.sh <package>
+./git/clone-repo.sh <repo_url> [repo_name] [branch] [post_clone_script]
 ```
 
 ### Theme Management
@@ -260,8 +297,7 @@ Hyprland multi-monitor setup:
 ./yay/tmux.sh                   # Install tmux + TPM (Tmux Plugin Manager)
 ./yay/voxtype.sh                # Install voxtype speech-to-text
 ./yay/iriun-webcam.sh           # Install Iriun Webcam + v4l2loopback
-./yay/auto-claude.sh            # Install Auto-Claude multi-agent framework
-./dev/dev.sh                    # Install node, laravel, pnpm
+./dev/dev.sh                    # Install Node.js 24 + pnpm
 ```
 
 ## Dependencies
@@ -271,7 +307,9 @@ The installation scripts assume:
 - `pacman` package manager
 - `git` for repository cloning
 - `stow` for dotfiles management (installed via batch installer)
-- Node.js and npm (for AI tools installation)
+- `mise` for Node.js version management
+- Node.js and npm (for global npm package installation)
+- `curl` for curl-based package installations
 - Omarchy Linux base system with custom commands
 - Hyprland window manager
 
@@ -282,24 +320,21 @@ The `start.sh` script executes installations in the following order:
 1. Install zsh (with Oh-My-Zsh + plugins) - `yay/zsh.sh`
 2. Batch install YAY packages - `yay/install-packages.sh`
 3. Batch install Pacman packages - `pacman/install-packages.sh`
-4. Obsidian vault - `install/obsidian-vault.sh`
-5. Dotfiles (stowed configurations) - `install/dotfiles.sh`
-6. Development tools - `dev/dev.sh`
-7. Tmux (with TPM post-install) - `yay/tmux.sh`
-8. Shell scripts repository - `install/shell-scripts.sh`
-9. AI tools - `install/ai-tools.sh`
-10. Auto-Claude multi-agent framework - `yay/auto-claude.sh`
-11. Nhost CLI - `install/nhost.sh`
-12. Omarchy themes - `install/omarchy-themes.sh`
-13. Omarchy webapps - `install/omarchy-webapps.sh`
-14. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
-15. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
-16. Hyprland overrides - `install/hyprland-overrides.sh`
-17. Yopki project repos - `dev/yopki.sh`
-18. USB Mode Switch - `install/usb-modeswitch.sh`
-19. Iriun Webcam - `yay/iriun-webcam.sh`
-20. Voxtype speech-to-text - `yay/voxtype.sh`
-21. Set default shell to zsh - `lib/set-shell.sh`
+4. Batch install NPM packages - `npm/install-packages.sh`
+5. Batch install curl packages - `curl/install-packages.sh`
+6. Clone git repositories (dotfiles, shell, obsidian) - `git/clone-repos.sh`
+7. Development tools - `dev/dev.sh`
+8. Tmux (with TPM post-install) - `yay/tmux.sh`
+9. Omarchy themes - `install/omarchy-themes.sh`
+10. Omarchy webapps - `install/omarchy-webapps.sh`
+11. Uninstall Omarchy apps (cleanup) - `uninstall/omarchy-apps.sh`
+12. Uninstall Omarchy webapps (cleanup) - `uninstall/omarchy-webapps.sh`
+13. Hyprland overrides - `install/hyprland-overrides.sh`
+14. Yopki project repos - `dev/yopki.sh`
+15. USB Mode Switch - `install/usb-modeswitch.sh`
+16. Iriun Webcam - `yay/iriun-webcam.sh`
+17. Voxtype speech-to-text - `yay/voxtype.sh`
+18. Set default shell to zsh - `lib/set-shell.sh`
 
 **Note:** After running `start.sh`, logout and login (or reboot) is required for shell change and voxtype input group to take effect.
 

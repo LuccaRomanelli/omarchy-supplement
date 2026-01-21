@@ -15,14 +15,11 @@ STEPS=(
     "REBOOT"  # Special marker - reboot here and continue after
     "yay/install-packages.sh"
     "pacman/install-packages.sh"
-    "install/obsidian-vault.sh"
-    "install/dotfiles.sh"
+    "npm/install-packages.sh"
+    "curl/install-packages.sh"
+    "git/clone-repos.sh"
     "dev/dev.sh"
     "yay/tmux.sh"
-    "install/shell-scripts.sh"
-    "install/ai-tools.sh"
-    "yay/auto-claude.sh"
-    "install/nhost.sh"
     "install/omarchy-themes.sh"
     "install/omarchy-webapps.sh"
     "uninstall/omarchy-apps.sh"
@@ -51,12 +48,16 @@ echo "Installing Pacman packages..."
 zsh "$SCRIPT_DIR/pacman/install-packages.sh"
 echo ""
 
-echo "Setting up Obsidian vault..."
-zsh "$SCRIPT_DIR/install/obsidian-vault.sh"
+echo "Installing npm packages..."
+zsh "$SCRIPT_DIR/npm/install-packages.sh"
 echo ""
 
-echo "Installing dotfiles..."
-zsh "$SCRIPT_DIR/install/dotfiles.sh"
+echo "Installing curl packages..."
+zsh "$SCRIPT_DIR/curl/install-packages.sh"
+echo ""
+
+echo "Cloning git repositories..."
+zsh "$SCRIPT_DIR/git/clone-repos.sh"
 echo ""
 
 echo "Installing development tools..."
@@ -65,22 +66,6 @@ echo ""
 
 echo "Installing Tmux + TPM..."
 zsh "$SCRIPT_DIR/yay/tmux.sh"
-echo ""
-
-echo "Installing shell scripts..."
-zsh "$SCRIPT_DIR/install/shell-scripts.sh"
-echo ""
-
-echo "Installing AI tools..."
-zsh "$SCRIPT_DIR/install/ai-tools.sh"
-echo ""
-
-echo "Installing Auto-Claude..."
-zsh "$SCRIPT_DIR/yay/auto-claude.sh"
-echo ""
-
-echo "Installing Nhost CLI..."
-zsh "$SCRIPT_DIR/install/nhost.sh"
 echo ""
 
 echo "Installing Omarchy themes..."

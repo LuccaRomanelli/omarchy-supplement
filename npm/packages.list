@@ -1,0 +1,5 @@
+# Global npm packages
+# Format: package_name (one per line)
+
+@anthropic-ai/claude-code
+@devcontainers/cli

@@ -5,7 +5,10 @@ DESKTOP_DIR="$HOME/.local/share/applications/"
 
 APP_NAMES=(
     "Basecamp"
-    "Chatgpt"
+    "ChatGPT"
+    "Fizzy"
+    "Typorra"
+    "XDvi"
     "Google Contacts"
     "Google Messages"
     "HEY"

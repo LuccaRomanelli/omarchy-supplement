@@ -43,9 +43,6 @@ get_theme_dir_name() {
         "https://github.com/ShehabShaef/omarchy-drac-theme")
             echo "drac"
             ;;
-        "https://github.com/evanklem/omarchy-avocado-theme")
-            echo "avocado"
-            ;;
         "https://github.com/RiO7MAKK3R/omarchy-omacarchy-theme")
             echo "omacarchy"
             ;;
@@ -95,7 +92,6 @@ install_theme_if_needed "https://github.com/abhijeet-swami/omarchy-spectra-theme
 install_theme_if_needed "https://github.com/atif-1402/omarchy-neonstreet-theme.git"
 install_theme_if_needed "https://github.com/Grey-007/duskwire.git"
 install_theme_if_needed "https://github.com/ShehabShaef/omarchy-drac-theme"
-install_theme_if_needed "https://github.com/evanklem/omarchy-avocado-theme"
 install_theme_if_needed "https://github.com/RiO7MAKK3R/omarchy-omacarchy-theme"
 
 curl -fsSL https://imbypass.github.io/omarchy-theme-hook/install.sh | bash

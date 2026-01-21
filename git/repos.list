@@ -3,4 +3,4 @@
 
 git@github.com:LuccaRomanelli/obisidian.git obisidian main
 git@github.com:LuccaRomanelli/dotfiles.git dotfiles main setup.sh
-https://github.com/LuccaRomanelli/shell.git shell main
+git@github.com:LuccaRomanelli/shell.git shell main

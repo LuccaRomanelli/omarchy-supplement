@@ -52,6 +52,17 @@ fi
 echo "Setting up compositor compatibility..."
 voxtype setup compositor hyprland
 
+# Fix: Ensure bindr for SUPER+D release exists in voxtype_recording submap
+# The voxtype setup may not include this, causing the release to not be detected
+VOXTYPE_SUBMAP="$HOME/.config/hypr/conf.d/voxtype-submap.conf"
+if [ -f "$VOXTYPE_SUBMAP" ] && ! grep -q "bindr = SUPER, D" "$VOXTYPE_SUBMAP"; then
+  echo "Fixing voxtype submap: adding SUPER+D release binding..."
+  sed -i '/^submap = voxtype_recording$/,/^submap = reset$/{
+    /^submap = voxtype_recording$/a\
+bindr = SUPER, D, exec, voxtype record stop
+  }' "$VOXTYPE_SUBMAP"
+fi
+
 # Ensure hyprland sources conf.d directory (required for voxtype submap)
 HYPRLAND_CONFIG="$HOME/.config/hypr/hyprland.conf"
 if [ -f "$HYPRLAND_CONFIG" ] && ! grep -q "conf.d" "$HYPRLAND_CONFIG"; then

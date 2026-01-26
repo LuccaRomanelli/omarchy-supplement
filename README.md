@@ -66,6 +66,8 @@ Each folder follows the same pattern:
 | **Iriun Webcam** | Use phone as wireless webcam |
 | **ripgrep** | Fast recursive grep |
 | **jq** | JSON processor |
+| **w3m** | Text-based web browser |
+| **googler** | Google search from command line |
 
 ### Document Processing
 | Tool | Description |

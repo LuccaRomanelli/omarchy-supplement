@@ -19,3 +19,6 @@ ttf-dejavu
 # Voxtype dependencies (speech-to-text)
 wtype
 wl-clipboard
+
+# Text-based tools
+w3m

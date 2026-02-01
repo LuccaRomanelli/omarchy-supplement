@@ -22,3 +22,6 @@ wl-clipboard
 
 # Text-based tools
 w3m
+
+# Cloud sync
+rclone

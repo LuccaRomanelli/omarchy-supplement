@@ -24,6 +24,10 @@ echo "Installing YAY packages..."
 zsh "$SCRIPT_DIR/yay/install-packages.sh"
 echo ""
 
+echo "Setting default browser..."
+zsh "$SCRIPT_DIR/install/default-browser.sh"
+echo ""
+
 echo "Installing Pacman packages..."
 zsh "$SCRIPT_DIR/pacman/install-packages.sh"
 echo ""

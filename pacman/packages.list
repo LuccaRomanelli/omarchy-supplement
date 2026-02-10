@@ -10,10 +10,12 @@ jq
 # Document conversion and email
 pandoc
 msmtp
+msmtp-mta
 texlive-basic
 texlive-xetex
 texlive-plaingeneric
 texlive-fontsrecommended
+texlive-latexrecommended
 ttf-dejavu
 
 # Voxtype dependencies (speech-to-text)

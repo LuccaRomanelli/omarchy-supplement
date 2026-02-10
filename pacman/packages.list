@@ -27,3 +27,6 @@ w3m
 
 # Cloud sync
 rclone
+
+# System info
+fastfetch

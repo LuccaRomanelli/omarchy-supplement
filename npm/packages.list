@@ -2,4 +2,5 @@
 # Format: <package_name> <check_command>
 
 @devcontainers/cli devcontainer
+@anthropic-ai/claude-code claude
 happy-coder happy

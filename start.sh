@@ -86,6 +86,10 @@ echo "Installing Auto-Claude..."
 zsh "$SCRIPT_DIR/yay/auto-claude.sh"
 echo ""
 
+echo "Installing Ollama with CUDA support..."
+zsh "$SCRIPT_DIR/yay/ollama.sh"
+echo ""
+
 echo "Setting Zsh as default shell..."
 bash "$SCRIPT_DIR/lib/set-shell.sh"
 echo ""

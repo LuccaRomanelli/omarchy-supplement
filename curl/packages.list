@@ -1,4 +1,3 @@
 # Curl-based package installations
 # Format: <name> <check_command> <install_url>
 nhost nhost https://raw.githubusercontent.com/nhost/cli/main/get.sh
-claude-code claude https://storage.googleapis.com/anthropic-public/claude-code/install.sh
